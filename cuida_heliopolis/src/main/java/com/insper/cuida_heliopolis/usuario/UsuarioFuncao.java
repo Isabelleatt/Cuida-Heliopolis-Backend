@@ -1,5 +1,6 @@
 package com.insper.cuida_heliopolis.usuario;
 
-public class CuidadorController {
-    
+public enum UsuarioFuncao {
+    USER,
+    ADMIN
 }
