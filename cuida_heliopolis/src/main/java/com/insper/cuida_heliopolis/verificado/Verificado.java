@@ -20,7 +20,7 @@ public class Verificado {
 
     private Cuidador cuidador;
     private Membro aprovador;
-    private LocalDateTime data;
+    private LocalDateTime dataAprovacao;
 
     private VerificadoStatus status;
 
