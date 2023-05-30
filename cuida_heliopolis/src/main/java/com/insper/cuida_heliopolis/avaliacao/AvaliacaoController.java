@@ -12,14 +12,18 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping("/cuidadora/{id}")
-    public List<AvaliaCuidadora> listaMensagens(@PathVariable Integer id) {
+    public List<AvaliaCuidadora> listaAvaliacoesCuidadora(@PathVariable Integer id) {
         return avaliacaoService.buscaAvaliacaoCuidadora(id);
+    }
+    @GetMapping("/responsavel/{id}")
+    public List<AvaliaResponsavel> listaAvaliacoesResponsavel(@PathVariable Integer id) {
+        return avaliacaoService.buscaAvaliacaoResponsavel(id);
     }
     @PostMapping("/cuidadora")
     public Avaliacao salvarAvaliacaoCuidadora(@RequestBody AvaliaCuidadora avaliacao) {
         return avaliacaoService.salvaAvaliacao(avaliacao);
     }
-    @PostMapping("responsavel")
+    @PostMapping("/responsavel")
     public Avaliacao salvarAvaliacaoResponsavel(@RequestBody AvaliaResponsavel avaliacao) {
         return avaliacaoService.salvaAvaliacao(avaliacao);
     }

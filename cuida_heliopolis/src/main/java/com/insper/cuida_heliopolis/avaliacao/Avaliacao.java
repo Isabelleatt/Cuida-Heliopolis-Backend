@@ -20,11 +20,10 @@ public class Avaliacao {
     @GeneratedValue(strategy =  GenerationType.IDENTITY) // jakarta automates int ids
     protected Integer id;
     
-    @Column(name = "identifier", nullable = false, unique = true)
-    private String identifier;
+    @Column
     @NotNull
     protected Integer avaliadorId;
     @NotNull
     protected Integer avaliadoId;
-    protected Time data;
+    protected String data;
 }
