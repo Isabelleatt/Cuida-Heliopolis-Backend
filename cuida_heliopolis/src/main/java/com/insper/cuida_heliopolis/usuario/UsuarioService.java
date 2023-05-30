@@ -1,5 +1,7 @@
 package com.insper.cuida_heliopolis.usuario;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,19 +9,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioService implements UserDetailsService{
+public class UsuarioService{
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    private final static String USER_NOT_FOUND_MSG = "Usuário com o email %s não encontrado";
-    
-    @Override 
-    public UserDetails loadUserByUsername(String email) 
-                throws UsernameNotFoundException {
-            return usuarioRepository.findByEmail(email)
-            .orElseThrow( () ->
-            new UsernameNotFoundException(
-                String.format(USER_NOT_FOUND_MSG, email)));
+    public Usuario cadastro(Usuario usuario) {
+        usuarioRepository.save(usuario);
+        return usuario;
+    }
+
+    public List<Usuario> usuarios() {
+        return usuarioRepository.findAll();
     }
 }
