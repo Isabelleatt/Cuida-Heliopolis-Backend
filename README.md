@@ -8,7 +8,7 @@ Pesquisas têm mostrado o grande impacto que tem a
 educação de qualidade na primeira infância no
 desempenho escolar e ingressos futuros. No Brasil,
 frequentar a creche dos 0-4 anos é facultativo, e não
-obrigatório como acontece a partir dos 6 anos.
+obrigató[rio como acontece a partir dos 6 anos.
 Em comunidades, mães que optam por não enviar as
 crianças à creche, que precisam de cuidados extras
 após 17h (horário de fechamento das creches) ou que
@@ -31,6 +31,10 @@ O Cuida Heliópolis é uma plataforma que conecta mães e cuidadoras de criança
 O projeto é fruto de uma parceria entre alunos do 3° semestre do curso de Ciência da Computação do Insper e a entidade UNAS (União de Núcleos, Associações dos Moradores de Heliópolis e Região), que atua na comunidade de Heliópolis, em São Paulo. A partir dessa parceria, cuidadoras da comunidade podem receber um selo de verificação da UNAS e, assim, serem reconhecidas como cuidadoras qualiﬁcadas, pois cuprem com os requisitos de capacitação e experiência exigidos pela UNAS.
 
 ### Estrutura do projeto
+
+O diagrama de classes representa a estrutura do projeto, que conta com um backend desenvolvido em JavaSpring e um frontend desenvolvido em ReactJS, ele pode ser acessado através do link:
+
+- [Diagrama de Classes](file:///C:/Users/Isabelle/Downloads/Diagrama%20de%20classes_2023-05-30_16-35-49.pdf)
 
 1. Pré-requisitos
 
