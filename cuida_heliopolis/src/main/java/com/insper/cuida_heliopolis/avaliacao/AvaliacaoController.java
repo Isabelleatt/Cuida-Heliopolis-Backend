@@ -15,11 +15,11 @@ public class AvaliacaoController {
     public List<AvaliaCuidadora> listaMensagens(@PathVariable Integer id) {
         return avaliacaoService.buscaAvaliacaoCuidadora(id);
     }
-    @PostMapping
+    @PostMapping("/cuidadora")
     public Avaliacao salvarAvaliacaoCuidadora(@RequestBody AvaliaCuidadora avaliacao) {
         return avaliacaoService.salvaAvaliacao(avaliacao);
     }
-    @PostMapping
+    @PostMapping("responsavel")
     public Avaliacao salvarAvaliacaoResponsavel(@RequestBody AvaliaResponsavel avaliacao) {
         return avaliacaoService.salvaAvaliacao(avaliacao);
     }

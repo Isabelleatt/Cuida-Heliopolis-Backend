@@ -16,12 +16,15 @@ import java.sql.Time;
 @NoArgsConstructor
 @MappedSuperclass
 public class Avaliacao {
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY) // jakarta automates int ids
+    protected Integer id;
     
     @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
     @NotNull
-    protected Integer avaliador_id;
+    protected Integer avaliadorId;
     @NotNull
-    protected Integer avaliado_id;
+    protected Integer avaliadoId;
     protected Time data;
 }

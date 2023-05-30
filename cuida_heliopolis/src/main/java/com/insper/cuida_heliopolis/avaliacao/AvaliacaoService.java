@@ -1,9 +1,11 @@
 package com.insper.cuida_heliopolis.avaliacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AvaliacaoService {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
@@ -13,11 +15,11 @@ public class AvaliacaoService {
     }
     // Procura por todas as avaliações de uma cuidadora.
     public List<AvaliaCuidadora> buscaAvaliacaoCuidadora(Integer id) {
-        return avaliacaoRepository.findByAvaliado_id(id);
+        return avaliacaoRepository.findByAvaliadoId(id);
     }
     // Procura por todas as avaliacoes de uma mâe.
     public List<AvaliaResponsavel> buscaAvaliacaoResponsavel(Integer id) {
-        return avaliacaoRepository.findByAvaliador_id(id);
+        return avaliacaoRepository.findByAvaliadorId(id);
     }
     // busca por id.
     public Avaliacao buscaAvaliacao(Integer id) {

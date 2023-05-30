@@ -11,9 +11,6 @@ import java.sql.Time;
 @Setter
 @Entity
 public class AvaliaCuidadora extends Avaliacao {
-    @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY) // jakarta automates int ids
-    private Integer id;
     @Column
     private Integer espaco;
     private Integer disponibilidade;
@@ -21,9 +18,10 @@ public class AvaliaCuidadora extends Avaliacao {
     private Integer vinculo;
     private Integer atividades;
     private String comentario;
-    public AvaliaCuidadora (Time data, Integer avaliador_id, Integer avaliado_id) {
-        this.avaliador_id = avaliador_id;
-        this.avaliado_id = avaliado_id;
+    public AvaliaCuidadora (Time data, Integer avaliador_id, Integer avaliado_id,Integer id) {
+        this.id = id;
+        this.avaliadorId = avaliador_id;
+        this.avaliadoId = avaliado_id;
         this.data = data;
     }
 
