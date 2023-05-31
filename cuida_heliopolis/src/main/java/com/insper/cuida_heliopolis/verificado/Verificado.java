@@ -2,7 +2,6 @@ package com.insper.cuida_heliopolis.verificado;
 
 import com.insper.cuida_heliopolis.usuario.Cuidador;
 import com.insper.cuida_heliopolis.usuario.Membro;
-import com.insper.cuida_heliopolis.usuario.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
