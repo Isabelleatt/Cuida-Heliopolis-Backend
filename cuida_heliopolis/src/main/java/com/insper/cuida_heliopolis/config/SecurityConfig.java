@@ -31,7 +31,8 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http
             .authorizeHttpRequests((authz) -> authz
-                .anyRequest().authenticated()
+                .requestMatchers("/localhost:8080/h2-console/**").permitAll()
+                .anyRequest().permitAll()
             )
             .httpBasic(Customizer.withDefaults());
 
