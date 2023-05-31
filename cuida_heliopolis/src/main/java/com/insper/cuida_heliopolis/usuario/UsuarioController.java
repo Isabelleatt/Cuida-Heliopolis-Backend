@@ -31,7 +31,7 @@ public class UsuarioController {
         return usuarioService.cadastro(usuario, tipo);
     }
 
-    @PutMapping("/usuario")
+    @PutMapping("/usuario/{email}")
     public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String email) {
         return usuarioService.alterar(usuario, email);
     }
