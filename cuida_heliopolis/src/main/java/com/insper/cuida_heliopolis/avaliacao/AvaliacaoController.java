@@ -21,15 +21,19 @@ public class AvaliacaoController {
     }
     @PostMapping("/cuidadora")
     public Avaliacao salvarAvaliacaoCuidadora(@RequestBody AvaliaCuidadora avaliacao) {
-        return avaliacaoService.salvaAvaliacao(avaliacao);
+        return avaliacaoService.salvaAvaliacaoCuidadora(avaliacao);
     }
     @PostMapping("/responsavel")
     public Avaliacao salvarAvaliacaoResponsavel(@RequestBody AvaliaResponsavel avaliacao) {
-        return avaliacaoService.salvaAvaliacao(avaliacao);
+        return avaliacaoService.salvaAvaliacaoResponsavel(avaliacao);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletaAvaliacao(@PathVariable Integer id) {
-        avaliacaoService.deletaAvaliacao(id);
+    @DeleteMapping("/cuidadora/{id}")
+    public void deletaAvaliacaoCuidadora(@PathVariable Integer id) {
+        avaliacaoService.deletaAvaliacaoCuidadora(id);
+    }
+    @DeleteMapping("/responsavel/{id}")
+    public void deletaAvaliacaoResponsavel(@PathVariable Integer id) {
+        avaliacaoService.deletaAvaliacaoResponsavel(id);
     }
 }

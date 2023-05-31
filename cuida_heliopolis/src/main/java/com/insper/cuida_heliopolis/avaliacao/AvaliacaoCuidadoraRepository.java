@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Integer> {
+public interface AvaliacaoCuidadoraRepository extends JpaRepository<AvaliaCuidadora, Integer> {
     List<AvaliaCuidadora> findByAvaliadoId(Integer id);
-    List<AvaliaResponsavel> findByAvaliadorId(Integer id);
 }

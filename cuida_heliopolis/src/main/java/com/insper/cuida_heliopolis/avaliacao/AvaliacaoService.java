@@ -8,18 +8,23 @@ import java.util.List;
 @Service
 public class AvaliacaoService {
     @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
+    private AvaliacaoResponsavelRepository avaliacaoRepository;
+    @Autowired
+    private AvaliacaoCuidadoraRepository avaliacaoCuidadoraRepository;
     // salva uma avaliação criada anteriormente.
-    public Avaliacao salvaAvaliacao(Avaliacao avaliacao) {
+    public AvaliaCuidadora salvaAvaliacaoCuidadora(AvaliaCuidadora avaliacao) {
+        return avaliacaoCuidadoraRepository.save(avaliacao);
+    }
+    public AvaliaResponsavel salvaAvaliacaoResponsavel(AvaliaResponsavel avaliacao) {
         return avaliacaoRepository.save(avaliacao);
     }
     // Procura por todas as avaliações de uma cuidadora.
     public List<AvaliaCuidadora> buscaAvaliacaoCuidadora(Integer id) {
-        return avaliacaoRepository.findByAvaliadoId(id);
+        return avaliacaoCuidadoraRepository.findByAvaliadoId(id);
     }
     // Procura por todas as avaliacoes de uma mâe.
     public List<AvaliaResponsavel> buscaAvaliacaoResponsavel(Integer id) {
-        return avaliacaoRepository.findByAvaliadorId(id);
+        return avaliacaoRepository.findByAvaliadoId(id);
     }
     // busca por id.
     public Avaliacao buscaAvaliacao(Integer id) {
@@ -30,10 +35,20 @@ public class AvaliacaoService {
         return null;
     }
     // deleta usando o id para isso.
-    public void deletaAvaliacao(Integer id) {
-        Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
+    public void deletaAvaliacaoResponsavel(Integer id) {
+
+        AvaliaResponsavel avaliacao = avaliacaoRepository.findById(id).get();
+
         if (avaliacao != null) {
             avaliacaoRepository.delete(avaliacao);
+        }
+    }
+    public void deletaAvaliacaoCuidadora(Integer id) {
+
+        AvaliaCuidadora avaliacao = avaliacaoCuidadoraRepository.findById(id).get();
+
+        if (avaliacao != null) {
+            avaliacaoCuidadoraRepository.delete(avaliacao);
         }
     }
 }
