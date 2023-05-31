@@ -18,12 +18,4 @@ public class AvaliaResponsavel extends Avaliacao {
     private  Integer comportamento;
     private  Integer pontualidade;
     private Integer pagamento;
-
-    public AvaliaResponsavel (String data, Integer avaliador_id, Integer avaliado_id, Integer id) {
-        this.id = id;
-        this.avaliadorId = avaliador_id;
-        this.avaliadoId = avaliado_id;
-        this.data = data;
-    }
-
 }

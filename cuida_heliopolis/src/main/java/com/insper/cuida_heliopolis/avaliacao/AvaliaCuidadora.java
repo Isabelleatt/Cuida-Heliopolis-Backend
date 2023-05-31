@@ -21,11 +21,4 @@ public class AvaliaCuidadora extends Avaliacao {
     private Integer vinculo;
     private Integer atividades;
     private String comentario;
-    public AvaliaCuidadora(String data, Integer avaliador_id, Integer avaliado_id,Integer id) {
-        this.id = id;
-        this.avaliadorId = avaliador_id;
-        this.avaliadoId = avaliado_id;
-        this.data = data;
-    }
-
 }

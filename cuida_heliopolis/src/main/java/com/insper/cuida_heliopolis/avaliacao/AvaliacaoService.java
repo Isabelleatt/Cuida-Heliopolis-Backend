@@ -36,17 +36,13 @@ public class AvaliacaoService {
     }
     // deleta usando o id para isso.
     public void deletaAvaliacaoResponsavel(Integer id) {
-
         AvaliaResponsavel avaliacao = avaliacaoRepository.findById(id).get();
-
         if (avaliacao != null) {
             avaliacaoRepository.delete(avaliacao);
         }
     }
     public void deletaAvaliacaoCuidadora(Integer id) {
-
         AvaliaCuidadora avaliacao = avaliacaoCuidadoraRepository.findById(id).get();
-
         if (avaliacao != null) {
             avaliacaoCuidadoraRepository.delete(avaliacao);
         }
