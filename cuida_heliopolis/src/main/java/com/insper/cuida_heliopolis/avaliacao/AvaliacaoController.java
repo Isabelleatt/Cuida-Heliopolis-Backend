@@ -3,6 +3,11 @@ package com.insper.cuida_heliopolis.avaliacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoCuidadoraReturnDTO;
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoCuidadoraSaveDTO;
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelReturnDTO;
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelSaveDTO;
+
 import java.util.List;
 
 @RestController
@@ -11,29 +16,29 @@ public class AvaliacaoController {
     @Autowired
     private AvaliacaoService avaliacaoService;
 
-    @GetMapping("/cuidadora/{id}")
-    public List<AvaliaCuidadora> listaAvaliacoesCuidadora(@PathVariable Integer id) {
-        return avaliacaoService.buscaAvaliacaoCuidadora(id);
+    @GetMapping("/cuidadora/{email}")
+    public List<Avaliacao> listaAvaliacoesCuidadora(@PathVariable String email) {
+        return avaliacaoService.buscaAvaliacoes(email);
     }
-    @GetMapping("/responsavel/{id}")
-    public List<AvaliaResponsavel> listaAvaliacoesResponsavel(@PathVariable Integer id) {
-        return avaliacaoService.buscaAvaliacaoResponsavel(id);
+    @GetMapping("/responsavel/{email}")
+    public List<Avaliacao> listaAvaliacoesResponsavel(@PathVariable String email) {
+        return avaliacaoService.buscaAvaliacoes(email);
     }
-    @PostMapping("/cuidadora")
-    public Avaliacao salvarAvaliacaoCuidadora(@RequestBody AvaliaCuidadora avaliacao) {
-        return avaliacaoService.salvaAvaliacaoCuidadora(avaliacao);
+    @PostMapping("/cuidadora/{email}")
+    public AvaliacaoCuidadoraReturnDTO salvarAvaliacaoCuidadora(@RequestBody AvaliacaoCuidadoraSaveDTO avaliacao, @PathVariable String email) {
+        return avaliacaoService.salvaAvaliacaoCuidadora(avaliacao, email);
     }
-    @PostMapping("/responsavel")
-    public Avaliacao salvarAvaliacaoResponsavel(@RequestBody AvaliaResponsavel avaliacao) {
-        return avaliacaoService.salvaAvaliacaoResponsavel(avaliacao);
+    @PostMapping("/responsavel/{email}")
+    public AvaliacaoResponsavelReturnDTO salvarAvaliacaoResponsavel(@RequestBody AvaliacaoResponsavelSaveDTO avaliacao, @PathVariable String email) {
+        return avaliacaoService.salvaAvaliacaoResponsavel(avaliacao, email);
     }
 
     @DeleteMapping("/cuidadora/{id}")
     public void deletaAvaliacaoCuidadora(@PathVariable Integer id) {
-        avaliacaoService.deletaAvaliacaoCuidadora(id);
+        avaliacaoService.deletaAvaliacao(id);
     }
     @DeleteMapping("/responsavel/{id}")
     public void deletaAvaliacaoResponsavel(@PathVariable Integer id) {
-        avaliacaoService.deletaAvaliacaoResponsavel(id);
+        avaliacaoService.deletaAvaliacao(id);
     }
 }

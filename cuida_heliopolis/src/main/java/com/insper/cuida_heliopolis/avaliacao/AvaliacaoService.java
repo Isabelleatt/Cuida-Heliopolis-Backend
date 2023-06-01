@@ -3,29 +3,65 @@ package com.insper.cuida_heliopolis.avaliacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoCuidadoraReturnDTO;
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoCuidadoraSaveDTO;
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelReturnDTO;
+import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelSaveDTO;
+import com.insper.cuida_heliopolis.usuario.UsuarioRepository;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class AvaliacaoService {
+
     @Autowired
-    private AvaliacaoResponsavelRepository avaliacaoRepository;
+    private AvaliacaoRepository avaliacaoRepository;
+
     @Autowired
-    private AvaliacaoCuidadoraRepository avaliacaoCuidadoraRepository;
-    // salva uma avaliação criada anteriormente.
-    public AvaliaCuidadora salvaAvaliacaoCuidadora(AvaliaCuidadora avaliacao) {
-        return avaliacaoCuidadoraRepository.save(avaliacao);
+    private UsuarioRepository usuarioRepository;
+
+    public AvaliacaoCuidadoraReturnDTO salvaAvaliacaoCuidadora(AvaliacaoCuidadoraSaveDTO avaliacao, String email) {
+        AvaliaCuidadora avaliaCuidadora = new AvaliaCuidadora();
+
+        avaliaCuidadora.setAvaliadorEmail(avaliacao.getAvaliadorEmail());
+        avaliaCuidadora.setAvaliadoEmail(email);
+        avaliaCuidadora.setData(LocalDateTime.now());
+        avaliaCuidadora.setTipo(AvaliacaoTipo.AVAL_CUIDADORA);
+        avaliaCuidadora.setEspaco(avaliacao.getEspaco());
+        avaliaCuidadora.setDisponibilidade(avaliacao.getDisponibilidade());
+        avaliaCuidadora.setQualificacao(avaliacao.getQualificacao());
+        avaliaCuidadora.setVinculo(avaliacao.getVinculo());
+        avaliaCuidadora.setAtividades(avaliacao.getAtividades());
+        avaliaCuidadora.setComentario(avaliacao.getComentario());
+
+        String nome = usuarioRepository.findByEmail(email).get().getNome();
+
+        return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, nome);
+
+
     }
-    public AvaliaResponsavel salvaAvaliacaoResponsavel(AvaliaResponsavel avaliacao) {
-        return avaliacaoRepository.save(avaliacao);
+
+    public AvaliacaoResponsavelReturnDTO salvaAvaliacaoResponsavel(AvaliacaoResponsavelSaveDTO avaliacao, String email) {
+        AvaliaResponsavel avaliaResponsavel = new AvaliaResponsavel();
+
+        avaliaResponsavel.setAvaliadorEmail(avaliacao.getAvaliadorEmail());
+        avaliaResponsavel.setAvaliadoEmail(email);
+        avaliaResponsavel.setData(LocalDateTime.now());
+        avaliaResponsavel.setTipo(AvaliacaoTipo.AVAL_RESPONSAVEL);
+        avaliaResponsavel.setComportamento(avaliacao.getComportamento());
+        avaliaResponsavel.setPontualidade(avaliacao.getPontualidade());
+        avaliaResponsavel.setPagamento(avaliacao.getPagamento());
+
+        String nome = usuarioRepository.findByEmail(email).get().getNome();
+
+        return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, nome);
     }
-    // Procura por todas as avaliações de uma cuidadora.
-    public List<AvaliaCuidadora> buscaAvaliacaoCuidadora(Integer id) {
-        return avaliacaoCuidadoraRepository.findByAvaliadoId(id);
+
+    public List<Avaliacao> buscaAvaliacoes(String email) {
+        return avaliacaoRepository.findByAvaliadoEmail(email);
     }
-    // Procura por todas as avaliacoes de uma mâe.
-    public List<AvaliaResponsavel> buscaAvaliacaoResponsavel(Integer id) {
-        return avaliacaoRepository.findByAvaliadoId(id);
-    }
+
     // busca por id.
     public Avaliacao buscaAvaliacao(Integer id) {
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
@@ -34,17 +70,12 @@ public class AvaliacaoService {
         }
         return null;
     }
+
     // deleta usando o id para isso.
-    public void deletaAvaliacaoResponsavel(Integer id) {
-        AvaliaResponsavel avaliacao = avaliacaoRepository.findById(id).get();
+    public void deletaAvaliacao(Integer id) {
+        Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
         if (avaliacao != null) {
             avaliacaoRepository.delete(avaliacao);
-        }
-    }
-    public void deletaAvaliacaoCuidadora(Integer id) {
-        AvaliaCuidadora avaliacao = avaliacaoCuidadoraRepository.findById(id).get();
-        if (avaliacao != null) {
-            avaliacaoCuidadoraRepository.delete(avaliacao);
         }
     }
 }
