@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioReturnDTO;
@@ -16,39 +18,37 @@ public class UsuarioService{
     private UsuarioRepository usuarioRepository;
 
     public UsuarioReturnDTO cadastro(UsuarioSaveDTO usuario, String tipo) {
-        if (tipo == "MEMBRO") {
-            Membro u = new Membro();
+        Usuario u = null;
+        
+
+        if (tipo.equals("MEMBRO")) {
+            u = new Membro();
 
             u.setNome(usuario.getNome());
             u.setCpf(usuario.getCpf());
             u.setEmail(usuario.getEmail());
-            u.setSenha(usuario.getSenha());
+            u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.MEMBRO);
-
-            usuarioRepository.save(u);
         }
-        else if (tipo == "CUIDADOR") {
-            Cuidador u = new Cuidador();
+        else if (tipo.equals("CUIDADOR")) {
+            u = new Cuidador();
 
             u.setNome(usuario.getNome());
             u.setCpf(usuario.getCpf());
             u.setEmail(usuario.getEmail());
-            u.setSenha(usuario.getSenha());
+            u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.CUIDADOR);
-
-            usuarioRepository.save(u);
         }
-        else if (tipo == "RESPONSAVEL") {
-            Responsavel u = new Responsavel();
+        else if (tipo.equals("RESPONSAVEL")) {
+            u = new Responsavel();
 
             u.setNome(usuario.getNome());
             u.setCpf(usuario.getCpf());
             u.setEmail(usuario.getEmail());
-            u.setSenha(usuario.getSenha());
-            u.setTipo(UsuarioTipo.RESPONSAVEL);
-
-            usuarioRepository.save(u);
+            u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+            u.setTipo(UsuarioTipo.RESPONSAVEL);            
         }
+        usuarioRepository.save(u);
         return UsuarioReturnDTO.convert(usuario);
     }
 

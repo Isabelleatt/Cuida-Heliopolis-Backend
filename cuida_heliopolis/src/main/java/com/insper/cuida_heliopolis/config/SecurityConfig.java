@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/").permitAll()
+                .requestMatchers("/usuario/cadastro/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(Customizer.withDefaults());

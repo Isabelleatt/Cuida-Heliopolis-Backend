@@ -26,7 +26,7 @@ public class UsuarioController {
         return usuarioService.usuarios();
     }
     
-    @PostMapping("/usuario/{tipo}")
+    @PostMapping("/usuario/cadastro/{tipo}")
     public UsuarioReturnDTO cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
         return usuarioService.cadastro(usuario, tipo);
     }
@@ -35,4 +35,5 @@ public class UsuarioController {
     public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String email) {
         return usuarioService.alterar(usuario, email);
     }
+
 }
