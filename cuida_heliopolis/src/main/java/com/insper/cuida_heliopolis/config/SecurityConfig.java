@@ -31,10 +31,11 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http
             .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/localhost:8080/h2-console/**").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/usuario/cadastro/**").permitAll()
+                .anyRequest().authenticated()
             )
-            .httpBasic(Customizer.withDefaults());
+            .formLogin(Customizer.withDefaults());
 
         http.userDetailsService(jpaUserDetailsService);
         http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
