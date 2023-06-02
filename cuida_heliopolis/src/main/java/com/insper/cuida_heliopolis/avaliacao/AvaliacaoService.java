@@ -52,7 +52,7 @@ public class AvaliacaoService {
         avaliaResponsavel.setComportamento(avaliacao.getComportamento());
         avaliaResponsavel.setPontualidade(avaliacao.getPontualidade());
         avaliaResponsavel.setPagamento(avaliacao.getPagamento());
-
+        avaliacaoRepository.save(avaliaResponsavel);
         String nome = usuarioRepository.findByEmail(email).get().getNome();
 
         return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, nome);
