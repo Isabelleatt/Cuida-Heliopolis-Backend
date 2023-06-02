@@ -12,16 +12,12 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor
 public class Avaliacao {
-
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY) // jakarta automates int ids
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
-    
     protected String avaliadorEmail;
-
     protected String avaliadoEmail;
 
     protected LocalDateTime data;
-
-    private AvaliacaoTipo tipo;
+    protected AvaliacaoTipo tipo;
 }
