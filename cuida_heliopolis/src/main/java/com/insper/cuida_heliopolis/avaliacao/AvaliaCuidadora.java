@@ -1,5 +1,7 @@
 package com.insper.cuida_heliopolis.avaliacao;
 
+import com.insper.cuida_heliopolis.usuario.Cuidador;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,8 @@ public class AvaliaCuidadora extends Avaliacao {
     private Integer vinculo;
     private Integer atividades;
     private String comentario;
+
+    @ManyToOne
+    @JoinColumn(name = "cuidador_id")
+    private Cuidador cuidador;
 }
