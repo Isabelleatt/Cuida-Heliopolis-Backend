@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
+import com.insper.cuida_heliopolis.usuario.dto.UsuarioLoginDTO;
 
 @RestController
 @RequestMapping("/api/auth")
