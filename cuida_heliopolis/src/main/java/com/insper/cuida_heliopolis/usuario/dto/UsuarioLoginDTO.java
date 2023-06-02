@@ -1,4 +1,4 @@
-package com.insper.cuida_heliopolis.auth;
+package com.insper.cuida_heliopolis.usuario.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

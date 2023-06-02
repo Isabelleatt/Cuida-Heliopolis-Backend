@@ -24,13 +24,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
         .csrf().disable()
-        .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
-        .anyRequest().permitAll()
+        .authorizeHttpRequests().requestMatchers("/api/auth/**", "/h2-console/**", "/h2-console").permitAll()
+        .anyRequest().authenticated()
+
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilher, UsernamePasswordAuthenticationFilter.class);
+        http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
         return http.build();
     }
     

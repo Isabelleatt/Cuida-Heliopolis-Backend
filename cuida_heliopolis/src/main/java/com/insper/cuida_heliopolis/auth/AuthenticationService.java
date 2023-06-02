@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.insper.cuida_heliopolis.config.JwtService;
 import com.insper.cuida_heliopolis.usuario.UsuarioRepository;
-import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
+import com.insper.cuida_heliopolis.usuario.dto.UsuarioLoginDTO;
 
 import lombok.RequiredArgsConstructor;
 
