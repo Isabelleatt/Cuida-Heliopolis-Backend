@@ -34,7 +34,7 @@ public class AvaliacaoService {
         avaliaCuidadora.setVinculo(avaliacao.getVinculo());
         avaliaCuidadora.setAtividades(avaliacao.getAtividades());
         avaliaCuidadora.setComentario(avaliacao.getComentario());
-
+        avaliacaoRepository.save(avaliaCuidadora);
         String nome = usuarioRepository.findByEmail(email).get().getNome();
 
         return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, nome);

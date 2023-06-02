@@ -16,7 +16,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Membro extends Usuario{
-
     @JsonIgnore
     @OneToMany(mappedBy = "aprovador")
     private List<Verificado> verificados;
