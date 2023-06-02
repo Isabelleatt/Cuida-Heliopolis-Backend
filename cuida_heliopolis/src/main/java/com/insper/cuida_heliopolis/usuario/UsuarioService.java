@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.insper.cuida_heliopolis.auth.AuthenticationResponse;
+import com.insper.cuida_heliopolis.config.JwtService;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
@@ -17,7 +19,13 @@ public class UsuarioService{
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public UsuarioReturnDTO cadastro(UsuarioSaveDTO usuario, String tipo) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
+    public AuthenticationResponse cadastro(UsuarioSaveDTO usuario, String tipo) {
         Usuario u = null;
         
 
@@ -27,7 +35,7 @@ public class UsuarioService{
             u.setNome(usuario.getNome());
             u.setCpf(usuario.getCpf());
             u.setEmail(usuario.getEmail());
-            u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+            u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.MEMBRO);
         }
         else if (tipo.equals("CUIDADOR")) {
@@ -36,7 +44,7 @@ public class UsuarioService{
             u.setNome(usuario.getNome());
             u.setCpf(usuario.getCpf());
             u.setEmail(usuario.getEmail());
-            u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+            u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.CUIDADOR);
         }
         else if (tipo.equals("RESPONSAVEL")) {
@@ -45,11 +53,12 @@ public class UsuarioService{
             u.setNome(usuario.getNome());
             u.setCpf(usuario.getCpf());
             u.setEmail(usuario.getEmail());
-            u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+            u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.RESPONSAVEL);            
         }
         usuarioRepository.save(u);
-        return UsuarioReturnDTO.convert(usuario);
+        var jwtToken = jwtService.generateToken(u);
+        return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
     public UsuarioReturnDTO alterar(UsuarioSaveDTO usuario, String email) {

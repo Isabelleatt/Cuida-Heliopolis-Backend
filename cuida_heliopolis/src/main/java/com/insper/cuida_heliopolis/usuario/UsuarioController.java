@@ -3,6 +3,7 @@ package com.insper.cuida_heliopolis.usuario;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insper.cuida_heliopolis.auth.AuthenticationResponse;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
@@ -26,9 +28,9 @@ public class UsuarioController {
         return usuarioService.usuarios();
     }
     
-    @PostMapping("/usuario/cadastro/{tipo}")
-    public UsuarioReturnDTO cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
-        return usuarioService.cadastro(usuario, tipo);
+    @PostMapping("/api/auth/cadastro/{tipo}")
+    public ResponseEntity<AuthenticationResponse> cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
+        return ResponseEntity.ok(usuarioService.cadastro(usuario, tipo));
     }
 
     @PutMapping("/usuario/{email}")
