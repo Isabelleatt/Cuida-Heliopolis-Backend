@@ -15,19 +15,14 @@ import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
 @Service
 public class UsuarioService{
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private JwtService jwtService;
-
     public AuthenticationResponse cadastro(UsuarioSaveDTO usuario, String tipo) {
         Usuario u = null;
-        
 
         if (tipo.equals("MEMBRO")) {
             u = new Membro();
@@ -60,7 +55,6 @@ public class UsuarioService{
         var jwtToken = jwtService.generateToken(u);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
-
     public UsuarioReturnDTO alterar(UsuarioSaveDTO usuario, String email) {
         Usuario u = usuarioRepository.findByEmail(email).get();
         if (u != null) {
@@ -91,7 +85,10 @@ public class UsuarioService{
         for (Usuario u : us) {
             usuarios.add(UsuarioReturnDTO.convert(u));
         }
-
         return usuarios;
+    }
+    public UsuarioTipo usuario(String email) {
+        Usuario user = usuarioRepository.findByEmail(email).get();
+        return user.getTipo();
     }
 }

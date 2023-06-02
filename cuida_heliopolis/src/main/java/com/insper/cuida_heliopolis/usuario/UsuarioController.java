@@ -27,7 +27,6 @@ public class UsuarioController {
     public List<UsuarioReturnDTO> getUsuarios() {
         return usuarioService.usuarios();
     }
-    
     @PostMapping("/api/auth/cadastro/{tipo}")
     public ResponseEntity<AuthenticationResponse> cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
         return ResponseEntity.ok(usuarioService.cadastro(usuario, tipo));

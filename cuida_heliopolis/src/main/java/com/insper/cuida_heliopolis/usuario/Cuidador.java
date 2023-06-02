@@ -18,7 +18,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Cuidador extends Usuario{
-
     private String bio;
     
     @JsonIgnore
@@ -28,5 +27,6 @@ public class Cuidador extends Usuario{
     @ManyToMany
     @JoinTable(name = "cuidadores_responsaveis")
     private List<Responsavel> responsaveis;
+
 
 }

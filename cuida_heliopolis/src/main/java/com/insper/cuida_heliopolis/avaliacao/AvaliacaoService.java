@@ -14,13 +14,10 @@ import java.util.List;
 
 @Service
 public class AvaliacaoService {
-
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     public AvaliacaoCuidadoraReturnDTO salvaAvaliacaoCuidadora(AvaliacaoCuidadoraSaveDTO avaliacao, String email) {
         AvaliaCuidadora avaliaCuidadora = new AvaliaCuidadora();
 
@@ -41,7 +38,6 @@ public class AvaliacaoService {
 
 
     }
-
     public AvaliacaoResponsavelReturnDTO salvaAvaliacaoResponsavel(AvaliacaoResponsavelSaveDTO avaliacao, String email) {
         AvaliaResponsavel avaliaResponsavel = new AvaliaResponsavel();
 
@@ -57,11 +53,9 @@ public class AvaliacaoService {
 
         return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, nome);
     }
-
     public List<Avaliacao> buscaAvaliacoes(String email) {
         return avaliacaoRepository.findByAvaliadoEmail(email);
     }
-
     // busca por id.
     public Avaliacao buscaAvaliacao(Integer id) {
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();
