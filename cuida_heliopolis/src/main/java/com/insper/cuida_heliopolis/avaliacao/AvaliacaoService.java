@@ -10,14 +10,18 @@ import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelSaveDTO;
 import com.insper.cuida_heliopolis.usuario.UsuarioRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AvaliacaoService {
+
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     public AvaliacaoCuidadoraReturnDTO salvaAvaliacaoCuidadora(AvaliacaoCuidadoraSaveDTO avaliacao, String email) {
         AvaliaCuidadora avaliaCuidadora = new AvaliaCuidadora();
 
@@ -53,9 +57,31 @@ public class AvaliacaoService {
 
         return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, nome);
     }
-    public List<Avaliacao> buscaAvaliacoes(String email) {
-        return avaliacaoRepository.findByAvaliadoEmail(email);
+
+    public List<AvaliacaoCuidadoraReturnDTO> buscaAvaliacoesCuidadora(String email) {
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findByAvaliadoEmail(email);
+        List<AvaliacaoCuidadoraReturnDTO> retorno = new ArrayList<AvaliacaoCuidadoraReturnDTO>();
+
+        for (Avaliacao a : avaliacoes) {
+            String nome = usuarioRepository.findByEmail(a.getAvaliadoEmail()).get().getNome();
+            retorno.add(AvaliacaoCuidadoraReturnDTO.convert((AvaliaCuidadora) a, nome));
+        }
+
+        return retorno;
     }
+
+    public List<AvaliacaoResponsavelReturnDTO> buscaAvaliacoesResponsavel (String email) {
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findByAvaliadoEmail(email);
+        List<AvaliacaoResponsavelReturnDTO> retorno = new ArrayList<AvaliacaoResponsavelReturnDTO>();
+
+        for (Avaliacao a : avaliacoes) {
+            String nome = usuarioRepository.findByEmail(a.getAvaliadoEmail()).get().getNome();
+            retorno.add(AvaliacaoResponsavelReturnDTO.convert((AvaliaResponsavel) a, nome));
+        }
+
+        return retorno;
+    }
+
     // busca por id.
     public Avaliacao buscaAvaliacao(Integer id) {
         Avaliacao avaliacao = avaliacaoRepository.findById(id).get();

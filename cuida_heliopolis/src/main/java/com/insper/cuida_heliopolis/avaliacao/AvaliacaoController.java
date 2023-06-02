@@ -25,13 +25,15 @@ public class AvaliacaoController {
     private UsuarioService usuarioService;
 
     @GetMapping("/cuidadora/{email}")
-    public List<Avaliacao> listaAvaliacoesCuidadora(@PathVariable String email) {
-        return avaliacaoService.buscaAvaliacoes(email);
+    public List<AvaliacaoCuidadoraReturnDTO> listaAvaliacoesCuidadora(@PathVariable String email) {
+        return avaliacaoService.buscaAvaliacoesCuidadora(email);
     }
+
     @GetMapping("/responsavel/{email}")
-    public List<Avaliacao> listaAvaliacoesResponsavel(@PathVariable String email) {
-        return avaliacaoService.buscaAvaliacoes(email);
+    public List<AvaliacaoResponsavelReturnDTO> listaAvaliacoesResponsavel(@PathVariable String email) {
+        return avaliacaoService.buscaAvaliacoesResponsavel(email);
     }
+
     @PostMapping("/cuidadora/{email}")
     public AvaliacaoCuidadoraReturnDTO salvarAvaliacaoCuidadora(@RequestBody AvaliacaoCuidadoraSaveDTO avaliacao, @PathVariable String email, @RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
