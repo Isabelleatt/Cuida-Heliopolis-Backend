@@ -30,11 +30,11 @@ public class UsuarioController {
             return usuarioService.usuarios();
         return null;
     }
-    @GetMapping
+    @GetMapping("/cuidadores")
     public List<CuidadorReturnDTO> getCuidadores() {
         return usuarioService.cuidadores();
-    };
-    @GetMapping
+    }
+    @GetMapping("/responsaveis")
     public List<ResponsavelReturnDTO> getResponsaveis(@RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String name = jwtService.extractUsername(authToken);
@@ -42,34 +42,31 @@ public class UsuarioController {
             return usuarioService.responsaveis();
         }
         return null;
-    };
-
-
+    }
     @GetMapping("/cuidador/{email}")
     public CuidadorReturnDTO getCuidador(@PathVariable String email) {
         return usuarioService.cuidador(email);
     }
-
     @GetMapping("/responsavel/{email}")
     public ResponsavelReturnDTO getResponsavel(@PathVariable String email) {
         return usuarioService.responsavel(email);
     }
-
-    @GetMapping("relacionados/{email}")
+    @PutMapping("/interesse/{email}")
+    public void declararInteresse(@PathVariable String email, @RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String interessado = jwtService.extractUsername(authToken);
+        usuarioService.declararInteresse(interessado,email);
+    }
+    @GetMapping("/relacionados/{email}")
     public List<UsuarioReturnDTO> getUsuariosRelacionados(@PathVariable String email) {
-        return getUsuariosRelacionados(email);
+        return usuarioService.relacionados(email);
     }
     
     @PostMapping("/api/auth/cadastro/{tipo}")
     public ResponseEntity<AuthenticationResponse> cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
         return ResponseEntity.ok(usuarioService.cadastro(usuario, tipo));
     }
-    @PutMapping("interesse/{email}")
-    public void declararInteresse(@PathVariable String email, @RequestHeader("Authorization") String authorizationHeader) {
-        String authToken = authorizationHeader.substring("Bearer ".length());
-        String interessado = jwtService.extractUsername(authToken);
-        usuarioService.declararInteresse(interessado,email);
-    }
+
     @PutMapping("/usuario/{email}")
     public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String email) {
         return usuarioService.alterar(usuario, email);

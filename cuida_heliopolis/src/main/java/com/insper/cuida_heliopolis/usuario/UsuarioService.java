@@ -2,6 +2,7 @@ package com.insper.cuida_heliopolis.usuario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -99,33 +100,48 @@ public class UsuarioService{
         return relacionados;
 
     }
-    public void declararInteresse(String interesado, String interessante) {
-        Usuario perfilInteressado = usuarioRepository.findByEmail(interesado).get();
+    public void declararInteresse(String interessado, String interessante) {
+        Usuario perfilInteressado = usuarioRepository.findByEmail(interessado).get();
         Usuario perfilInteressante = usuarioRepository.findByEmail(interessante).get();
 
         if (perfilInteressado.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
             Responsavel responsavel  = (Responsavel) perfilInteressado;
             Cuidador cuidador = (Cuidador) perfilInteressante;
 
-            List<Cuidador> newC = responsavel.getCuidadores();
-            newC.add(cuidador);
-            responsavel.setCuidadores(newC);
+            responsavel.getCuidadores().add(cuidador);
+            cuidador.getResponsaveis().add(responsavel);
 
-            List<Responsavel> newR =  cuidador.getResponsaveis();
-            newR.add(responsavel);
-            cuidador.setResponsaveis(newR);
+            usuarioRepository.save(cuidador);
+            usuarioRepository.save(responsavel);
         } else {
             Responsavel responsavel  = (Responsavel) perfilInteressante;
             Cuidador cuidador = (Cuidador) perfilInteressado;
 
-            List<Cuidador> newC = responsavel.getCuidadores();
-            newC.add(cuidador);
-            responsavel.setCuidadores(newC);
+            responsavel.getCuidadores().add(cuidador);
+            cuidador.getResponsaveis().add(responsavel);
 
-            List<Responsavel> newR =  cuidador.getResponsaveis();
-            newR.add(responsavel);
-            cuidador.setResponsaveis(newR);
+            usuarioRepository.save(cuidador);
+            usuarioRepository.save(responsavel);
         }
+
+    }
+    public List<UsuarioReturnDTO> relacionados(String email) {
+        Usuario user = usuarioRepository.findByEmail(email).get();
+        List<UsuarioReturnDTO> resposta = new ArrayList<>();
+        if (user.getTipo().equals(UsuarioTipo.CUIDADOR)) {
+            Cuidador cuidador = (Cuidador) user;
+            List<Responsavel> responsaveis = cuidador.getResponsaveis();
+            for (Responsavel r : responsaveis) {
+                resposta.add(UsuarioReturnDTO.convert((Usuario) r));
+            }
+        } else {
+            Responsavel responsavel = (Responsavel) user;
+            List<Cuidador> cuidadores = responsavel.getCuidadores();
+            for (Cuidador c:cuidadores) {
+                resposta.add(UsuarioReturnDTO.convert((Usuario) c));
+            }
+        }
+        return resposta;
     }
     public List<UsuarioReturnDTO> usuarios() {
         List<Usuario> us = usuarioRepository.findAll();
