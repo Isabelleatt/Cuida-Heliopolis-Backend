@@ -1,5 +1,5 @@
 package com.insper.cuida_heliopolis.verificado;
 
-public class VericadoService {
-    
+public enum VerificadoStatus {
+    ATIVO, EXPIRADO
 }
