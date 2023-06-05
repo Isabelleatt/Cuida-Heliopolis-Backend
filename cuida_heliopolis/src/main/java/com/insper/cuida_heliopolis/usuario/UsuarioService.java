@@ -139,7 +139,6 @@ public class UsuarioService{
         Usuario user = usuarioRepository.findByEmail(email).get();
         return user.getTipo();
     }
-
     public CuidadorReturnDTO cuidador(String email) {
         Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
         if (cuidador != null) {
@@ -147,7 +146,22 @@ public class UsuarioService{
         }
         return null;
     }
-
+    public List<CuidadorReturnDTO> cuidadores() {
+        List<Usuario> cuidadores = usuarioRepository.findByTipo(UsuarioTipo.CUIDADOR);
+        List<CuidadorReturnDTO> retorno = new ArrayList<>();
+        for (Usuario c : cuidadores) {
+            retorno.add(CuidadorReturnDTO.convert((Cuidador) c));
+        }
+        return retorno;
+    }
+    public List<ResponsavelReturnDTO> responsaveis() {
+        List<Usuario> responsaveis = usuarioRepository.findByTipo(UsuarioTipo.RESPONSAVEL);
+        List<ResponsavelReturnDTO> retorno = new ArrayList<>();
+        for (Usuario r : responsaveis) {
+            retorno.add(ResponsavelReturnDTO.convert((Responsavel)r));
+        }
+        return retorno;
+    }
     public ResponsavelReturnDTO responsavel(String email) {
         Responsavel responsavel = (Responsavel) usuarioRepository.findByEmail(email).get();
         if (responsavel != null) {

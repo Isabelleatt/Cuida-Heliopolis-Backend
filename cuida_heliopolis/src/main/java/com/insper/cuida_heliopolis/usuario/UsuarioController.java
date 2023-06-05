@@ -22,10 +22,30 @@ public class UsuarioController {
     @Autowired
     private JwtService jwtService;
 
-    @GetMapping("/usuario")
-    public List<UsuarioReturnDTO> getUsuarios() {
-        return usuarioService.usuarios();
+    @GetMapping("/usuarios")
+    public List<UsuarioReturnDTO> getUsuarios(@RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String name = jwtService.extractUsername(authToken);
+        if (usuarioService.usuarioTipo(name).equals(UsuarioTipo.MEMBRO))
+            return usuarioService.usuarios();
+        return null;
     }
+    @GetMapping
+    public List<CuidadorReturnDTO> getCuidadores(@RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String name = jwtService.extractUsername(authToken);
+        return usuarioService.cuidadores();
+    };
+    @GetMapping
+    public List<ResponsavelReturnDTO> getResponsaveis(@RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String name = jwtService.extractUsername(authToken);
+        if (usuarioService.usuarioTipo(name).equals(UsuarioTipo.MEMBRO)) {
+            return usuarioService.responsaveis();
+        }
+        return null;
+    };
+
 
     @GetMapping("/cuidador/{email}")
     public CuidadorReturnDTO getCuidador(@PathVariable String email) {
@@ -37,7 +57,7 @@ public class UsuarioController {
         return usuarioService.responsavel(email);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("relacionados/{email}")
     public List<UsuarioReturnDTO> getUsuariosRelacionados(@PathVariable String email) {
         return getUsuariosRelacionados(email);
     }
