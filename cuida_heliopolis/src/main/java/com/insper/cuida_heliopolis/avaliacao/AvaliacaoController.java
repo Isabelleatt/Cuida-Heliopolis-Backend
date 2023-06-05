@@ -71,7 +71,7 @@ public class AvaliacaoController {
     public  Integer deletaAvaliacaoCuidadora(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String email = jwtService.extractUsername(authToken);
-        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) || usuarioService.usuario(email).equals(UsuarioTipo.MEMBRO)) {
+        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) || usuarioService.usuarioTipo(email).equals(UsuarioTipo.MEMBRO)) {
             avaliacaoService.deletaAvaliacao(id);
             return id;
         }
@@ -81,7 +81,7 @@ public class AvaliacaoController {
     public Integer deletaAvaliacaoResponsavel(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String email = jwtService.extractUsername(authToken);
-        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) || usuarioService.usuario(email).equals(UsuarioTipo.MEMBRO)) {
+        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) || usuarioService.usuarioTipo(email).equals(UsuarioTipo.MEMBRO)) {
             avaliacaoService.deletaAvaliacao(id);
             return id;
         }
