@@ -21,6 +21,7 @@ public class UsuarioService{
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtService jwtService;
+
     public AuthenticationResponse cadastro(UsuarioSaveDTO usuario, String tipo) {
         Usuario u = null;
 
@@ -78,7 +79,26 @@ public class UsuarioService{
         }
         return null;
     }
+    public List<UsuarioReturnDTO> usuariosRelacionados(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email).get();
+        List<UsuarioReturnDTO> relacionados = new ArrayList<>();
+        if (usuario.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
+            Responsavel responsavel = (Responsavel) usuario;
+            List<Cuidador> cuidadores = responsavel.getCuidadores();
+            for (Cuidador c : cuidadores) {
+                relacionados.add(UsuarioReturnDTO.convert(c));
+            }
+        } else {
+            Cuidador cuidador = (Cuidador) usuario;
+            List<Responsavel> responsaveis = cuidador.getResponsaveis();
 
+            for (Responsavel r : responsaveis) {
+                relacionados.add(UsuarioReturnDTO.convert(r));
+            }
+        }
+        return relacionados;
+
+    }
     public List<UsuarioReturnDTO> usuarios() {
         List<Usuario> us = usuarioRepository.findAll();
         List<UsuarioReturnDTO> usuarios = new ArrayList<UsuarioReturnDTO>();
@@ -86,9 +106,5 @@ public class UsuarioService{
             usuarios.add(UsuarioReturnDTO.convert(u));
         }
         return usuarios;
-    }
-    public UsuarioTipo usuario(String email) {
-        Usuario user = usuarioRepository.findByEmail(email).get();
-        return user.getTipo();
     }
 }

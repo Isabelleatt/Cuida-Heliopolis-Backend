@@ -32,4 +32,5 @@ public class Cuidador extends Usuario{
 
     @OneToMany(mappedBy = "cuidador")
     private List<AvaliaCuidadora> avaliacoes;
+
 }
