@@ -16,12 +16,10 @@ import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 @RestController
 @RequestMapping("")
 public class UsuarioController {
-
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
     private JwtService jwtService;
-
     @GetMapping("/usuarios")
     public List<UsuarioReturnDTO> getUsuarios(@RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
@@ -61,12 +59,10 @@ public class UsuarioController {
     public List<UsuarioReturnDTO> getUsuariosRelacionados(@PathVariable String email) {
         return usuarioService.relacionados(email);
     }
-    
     @PostMapping("/api/auth/cadastro/{tipo}")
     public ResponseEntity<AuthenticationResponse> cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
         return ResponseEntity.ok(usuarioService.cadastro(usuario, tipo));
     }
-
     @PutMapping("/usuario/{email}")
     public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String email) {
         return usuarioService.alterar(usuario, email);
