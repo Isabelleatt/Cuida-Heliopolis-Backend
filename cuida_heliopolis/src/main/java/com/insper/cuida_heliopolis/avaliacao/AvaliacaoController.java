@@ -43,7 +43,7 @@ public class AvaliacaoController {
             return null;
         }
         // verifica se a avaliação é legal.
-        if (usuarioService.usuario(email).equals(usuarioService.usuario(avaliadorEmail))) {
+        if (usuarioService.usuarioTipo(email).equals(usuarioService.usuarioTipo(avaliadorEmail))) {
             return null;
         }
 
@@ -59,7 +59,7 @@ public class AvaliacaoController {
             return null;
         }
         // verifica se a avaliação é legal.
-        if (usuarioService.usuario(email).equals(usuarioService.usuario(avaliadorEmail))) {
+        if (usuarioService.usuarioTipo(email).equals(usuarioService.usuarioTipo(avaliadorEmail))) {
             return null;
         }
 
@@ -68,19 +68,23 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping("/cuidadora/{id}")
-    public void deletaAvaliacaoCuidadora(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
+    public  Integer deletaAvaliacaoCuidadora(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String email = jwtService.extractUsername(authToken);
-        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) && usuarioService.usuario(email).equals(UsuarioTipo.MEMBRO)) {
+        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) || usuarioService.usuarioTipo(email).equals(UsuarioTipo.MEMBRO)) {
             avaliacaoService.deletaAvaliacao(id);
+            return id;
         }
+        return -1;
     }
     @DeleteMapping("/responsavel/{id}")
-    public void deletaAvaliacaoResponsavel(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
+    public Integer deletaAvaliacaoResponsavel(@PathVariable Integer id, @RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String email = jwtService.extractUsername(authToken);
-        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) && usuarioService.usuario(email).equals(UsuarioTipo.MEMBRO)) {
+        if (email.equals( avaliacaoService.buscaAvaliacao(id).getAvaliadorEmail()) || usuarioService.usuarioTipo(email).equals(UsuarioTipo.MEMBRO)) {
             avaliacaoService.deletaAvaliacao(id);
+            return id;
         }
+        return -1;
     }
 }

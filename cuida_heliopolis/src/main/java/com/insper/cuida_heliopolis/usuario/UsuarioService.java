@@ -79,7 +79,54 @@ public class UsuarioService{
         }
         return null;
     }
+    public List<UsuarioReturnDTO> usuariosRelacionados(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email).get();
+        List<UsuarioReturnDTO> relacionados = new ArrayList<>();
+        if (usuario.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
+            Responsavel responsavel = (Responsavel) usuario;
+            List<Cuidador> cuidadores = responsavel.getCuidadores();
+            for (Cuidador c : cuidadores) {
+                relacionados.add(UsuarioReturnDTO.convert(c));
+            }
+        } else {
+            Cuidador cuidador = (Cuidador) usuario;
+            List<Responsavel> responsaveis = cuidador.getResponsaveis();
 
+            for (Responsavel r : responsaveis) {
+                relacionados.add(UsuarioReturnDTO.convert(r));
+            }
+        }
+        return relacionados;
+
+    }
+    public void declararInteresse(String interesado, String interessante) {
+        Usuario perfilInteressado = usuarioRepository.findByEmail(interesado).get();
+        Usuario perfilInteressante = usuarioRepository.findByEmail(interessante).get();
+
+        if (perfilInteressado.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
+            Responsavel responsavel  = (Responsavel) perfilInteressado;
+            Cuidador cuidador = (Cuidador) perfilInteressante;
+
+            List<Cuidador> newC = responsavel.getCuidadores();
+            newC.add(cuidador);
+            responsavel.setCuidadores(newC);
+
+            List<Responsavel> newR =  cuidador.getResponsaveis();
+            newR.add(responsavel);
+            cuidador.setResponsaveis(newR);
+        } else {
+            Responsavel responsavel  = (Responsavel) perfilInteressante;
+            Cuidador cuidador = (Cuidador) perfilInteressado;
+
+            List<Cuidador> newC = responsavel.getCuidadores();
+            newC.add(cuidador);
+            responsavel.setCuidadores(newC);
+
+            List<Responsavel> newR =  cuidador.getResponsaveis();
+            newR.add(responsavel);
+            cuidador.setResponsaveis(newR);
+        }
+    }
     public List<UsuarioReturnDTO> usuarios() {
         List<Usuario> us = usuarioRepository.findAll();
         List<UsuarioReturnDTO> usuarios = new ArrayList<UsuarioReturnDTO>();
@@ -88,8 +135,7 @@ public class UsuarioService{
         }
         return usuarios;
     }
-
-    public UsuarioTipo usuario(String email) {
+    public UsuarioTipo usuarioTipo(String email) {
         Usuario user = usuarioRepository.findByEmail(email).get();
         return user.getTipo();
     }

@@ -2,15 +2,10 @@ package com.insper.cuida_heliopolis.usuario;
 
 import java.util.List;
 
+import com.insper.cuida_heliopolis.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.insper.cuida_heliopolis.auth.AuthenticationResponse;
 import com.insper.cuida_heliopolis.usuario.dto.CuidadorReturnDTO;
@@ -24,6 +19,8 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping("/usuario")
     public List<UsuarioReturnDTO> getUsuarios() {
@@ -40,11 +37,21 @@ public class UsuarioController {
         return usuarioService.responsavel(email);
     }
 
+    @GetMapping("/{email}")
+    public List<UsuarioReturnDTO> getUsuariosRelacionados(@PathVariable String email) {
+        return getUsuariosRelacionados(email);
+    }
+    
     @PostMapping("/api/auth/cadastro/{tipo}")
     public ResponseEntity<AuthenticationResponse> cadastraUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String tipo) {
         return ResponseEntity.ok(usuarioService.cadastro(usuario, tipo));
     }
-
+    @PutMapping("interesse/{email}")
+    public void declararInteresse(@PathVariable String email, @RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String interessado = jwtService.extractUsername(authToken);
+        usuarioService.declararInteresse(interessado,email);
+    }
     @PutMapping("/usuario/{email}")
     public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String email) {
         return usuarioService.alterar(usuario, email);
