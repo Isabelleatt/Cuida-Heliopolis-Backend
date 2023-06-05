@@ -11,10 +11,12 @@ public class UsuarioReturnDTO {
 
     private String nome;
     private String email;
+    private String telefone;
 
     public static UsuarioReturnDTO convert(UsuarioSaveDTO usuario) {
         UsuarioReturnDTO userReturnDTO = new UsuarioReturnDTO();
         userReturnDTO.setNome(usuario.getNome());
+        userReturnDTO.setTelefone(usuario.getTelefone());
         userReturnDTO.setEmail(usuario.getEmail());
         return userReturnDTO;
     }
@@ -22,6 +24,7 @@ public class UsuarioReturnDTO {
     public static UsuarioReturnDTO convert(Usuario usuario) {
         UsuarioReturnDTO userReturnDTO = new UsuarioReturnDTO();
         userReturnDTO.setNome(usuario.getNome());
+        userReturnDTO.setTelefone(usuario.getTelefone());
         userReturnDTO.setEmail(usuario.getEmail());
         return userReturnDTO;
     }

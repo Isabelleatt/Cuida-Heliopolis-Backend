@@ -16,6 +16,7 @@ public class AvaliaResponsavel extends Avaliacao {
     private Integer comportamento;
     private Integer pontualidade;
     private Integer pagamento;
+    private double mediaAval;
     @ManyToOne
     @JoinColumn(name = "responsavel_id")
     private Responsavel responsavel;

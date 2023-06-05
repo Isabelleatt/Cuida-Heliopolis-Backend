@@ -17,6 +17,7 @@ public class AvaliaCuidadora extends Avaliacao {
     private Integer qualificacao;
     private Integer vinculo;
     private Integer atividades;
+    private double mediaAval;
     private String comentario;
 
     @ManyToOne

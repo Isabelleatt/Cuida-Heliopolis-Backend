@@ -32,11 +32,11 @@ public class Usuario implements UserDetails{
 
     private String nome;
 
-    private String cpf;
-
     private String email;
 
     private String senha;
+
+    private String telefone;
 
     @Enumerated(EnumType.STRING)
     private UsuarioTipo tipo;

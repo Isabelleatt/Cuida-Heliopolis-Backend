@@ -4,23 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.insper.cuida_heliopolis.auth.AuthenticationResponse;
 import com.insper.cuida_heliopolis.config.JwtService;
+import com.insper.cuida_heliopolis.usuario.dto.CuidadorReturnDTO;
+import com.insper.cuida_heliopolis.usuario.dto.ResponsavelReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
 @Service
 public class UsuarioService{
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JwtService jwtService;
+
     public AuthenticationResponse cadastro(UsuarioSaveDTO usuario, String tipo) {
         Usuario u = null;
 
@@ -28,7 +33,7 @@ public class UsuarioService{
             u = new Membro();
 
             u.setNome(usuario.getNome());
-            u.setCpf(usuario.getCpf());
+            u.setTelefone(usuario.getTelefone());
             u.setEmail(usuario.getEmail());
             u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.MEMBRO);
@@ -37,7 +42,7 @@ public class UsuarioService{
             u = new Cuidador();
 
             u.setNome(usuario.getNome());
-            u.setCpf(usuario.getCpf());
+            u.setTelefone(usuario.getTelefone());
             u.setEmail(usuario.getEmail());
             u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.CUIDADOR);
@@ -46,7 +51,7 @@ public class UsuarioService{
             u = new Responsavel();
 
             u.setNome(usuario.getNome());
-            u.setCpf(usuario.getCpf());
+            u.setTelefone(usuario.getTelefone());
             u.setEmail(usuario.getEmail());
             u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.RESPONSAVEL);            
@@ -60,10 +65,6 @@ public class UsuarioService{
         if (u != null) {
             if (usuario.getNome() != null) {
                 u.setNome(usuario.getNome());
-            }
-
-            if (usuario.getCpf() != null) {
-                u.setCpf(usuario.getCpf());
             }
 
             if (usuario.getEmail() != null) {
@@ -87,8 +88,25 @@ public class UsuarioService{
         }
         return usuarios;
     }
+
     public UsuarioTipo usuario(String email) {
         Usuario user = usuarioRepository.findByEmail(email).get();
         return user.getTipo();
+    }
+
+    public CuidadorReturnDTO cuidador(String email) {
+        Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
+        if (cuidador != null) {
+            return CuidadorReturnDTO.convert(cuidador);
+        }
+        return null;
+    }
+
+    public ResponsavelReturnDTO responsavel(String email) {
+        Responsavel responsavel = (Responsavel) usuarioRepository.findByEmail(email).get();
+        if (responsavel != null) {
+            return ResponsavelReturnDTO.convert(responsavel);
+        }
+        return null;
     }
 }

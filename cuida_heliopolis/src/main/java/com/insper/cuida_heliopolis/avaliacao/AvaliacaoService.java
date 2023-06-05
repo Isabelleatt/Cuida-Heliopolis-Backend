@@ -7,6 +7,8 @@ import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoCuidadoraReturnDTO;
 import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoCuidadoraSaveDTO;
 import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelReturnDTO;
 import com.insper.cuida_heliopolis.avaliacao.dto.AvaliacaoResponsavelSaveDTO;
+import com.insper.cuida_heliopolis.usuario.Cuidador;
+import com.insper.cuida_heliopolis.usuario.Responsavel;
 import com.insper.cuida_heliopolis.usuario.UsuarioRepository;
 
 import java.time.LocalDateTime;
@@ -29,16 +31,29 @@ public class AvaliacaoService {
         avaliaCuidadora.setAvaliadoEmail(email);
         avaliaCuidadora.setData(LocalDateTime.now());
         avaliaCuidadora.setTipo(AvaliacaoTipo.AVAL_CUIDADORA);
+
         avaliaCuidadora.setEspaco(avaliacao.getEspaco());
         avaliaCuidadora.setDisponibilidade(avaliacao.getDisponibilidade());
         avaliaCuidadora.setQualificacao(avaliacao.getQualificacao());
         avaliaCuidadora.setVinculo(avaliacao.getVinculo());
         avaliaCuidadora.setAtividades(avaliacao.getAtividades());
-        avaliaCuidadora.setComentario(avaliacao.getComentario());
-        avaliacaoRepository.save(avaliaCuidadora);
-        String nome = usuarioRepository.findByEmail(email).get().getNome();
+        avaliaCuidadora.setMediaAval((avaliacao.getAtividades() + avaliacao.getDisponibilidade() + avaliacao.getEspaco() + avaliacao.getQualificacao() + avaliacao.getVinculo()) / 5);
 
-        return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, nome);
+        avaliaCuidadora.setComentario(avaliacao.getComentario());
+
+        avaliacaoRepository.save(avaliaCuidadora);
+
+        Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
+        cuidador.getAvaliacoes().add(avaliaCuidadora);
+
+        cuidador.setNotaMedia(cuidador.calculaNotaMedia("media"));
+        cuidador.setDisponibilidadeMedia(cuidador.calculaNotaMedia("disponibilidade"));
+        cuidador.setEspacoMedia(cuidador.calculaNotaMedia("espaço"));
+        cuidador.setQualificacaoMedia(cuidador.calculaNotaMedia("qualificação"));
+        cuidador.setVinculoMedia(cuidador.calculaNotaMedia("vínculo"));
+        cuidador.setAtividadesMedia(cuidador.calculaNotaMedia("atividades"));
+
+        return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, cuidador.getNome());
 
 
     }
@@ -49,13 +64,23 @@ public class AvaliacaoService {
         avaliaResponsavel.setAvaliadoEmail(email);
         avaliaResponsavel.setData(LocalDateTime.now());
         avaliaResponsavel.setTipo(AvaliacaoTipo.AVAL_RESPONSAVEL);
+
         avaliaResponsavel.setComportamento(avaliacao.getComportamento());
         avaliaResponsavel.setPontualidade(avaliacao.getPontualidade());
         avaliaResponsavel.setPagamento(avaliacao.getPagamento());
-        avaliacaoRepository.save(avaliaResponsavel);
-        String nome = usuarioRepository.findByEmail(email).get().getNome();
+        avaliaResponsavel.setMediaAval((avaliacao.getComportamento() + avaliacao.getPontualidade() + avaliacao.getPagamento()) / 3);
 
-        return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, nome);
+        avaliacaoRepository.save(avaliaResponsavel);
+
+        Responsavel responsavel = (Responsavel) usuarioRepository.findByEmail(email).get();
+        responsavel.getAvaliacoes().add(avaliaResponsavel);
+
+        responsavel.setNotaMedia(responsavel.calculaNotaMedia("media"));
+        responsavel.setComportamentoMedia(responsavel.calculaNotaMedia("comportamento"));
+        responsavel.setPagamentoMedia(responsavel.calculaNotaMedia("pagamento"));
+        responsavel.setPontualidadeMedia(responsavel.calculaNotaMedia("pontualidade"));
+
+        return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, responsavel.getNome());
     }
 
     public List<AvaliacaoCuidadoraReturnDTO> buscaAvaliacoesCuidadora(String email) {

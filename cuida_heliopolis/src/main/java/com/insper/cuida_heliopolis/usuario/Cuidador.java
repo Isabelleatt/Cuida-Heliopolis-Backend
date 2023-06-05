@@ -21,6 +21,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Cuidador extends Usuario{
     private String bio;
+    private Integer numCriancas;
+
+    private double notaMedia;
+    private double espacoMedia;
+    private double disponibilidadeMedia;
+    private double qualificacaoMedia;
+    private double vinculoMedia;
+    private double atividadesMedia;
     
     @JsonIgnore
     @OneToOne(mappedBy = "cuidador")
@@ -32,4 +40,32 @@ public class Cuidador extends Usuario{
 
     @OneToMany(mappedBy = "cuidador")
     private List<AvaliaCuidadora> avaliacoes;
+
+    public double calculaNotaMedia(String tipo) {
+        double nota = 0;
+        int contador = this.avaliacoes.size();
+        for (AvaliaCuidadora a : this.avaliacoes) {
+            if (tipo.equals("espaço")) {
+                nota += a.getEspaco();
+            }
+            else if (tipo.equals("disponibilidade")) {
+                nota += a.getDisponibilidade();
+            }
+            else if (tipo.equals("qualificação")) {
+                nota += a.getQualificacao();
+            }
+            else if (tipo.equals("vínculo")) {
+                nota += a.getVinculo();
+            }
+            else if (tipo.equals("atividades")) {
+                nota += a.getAtividades();
+            }
+            else if (tipo.equals("media")) {
+                nota += a.getMediaAval();
+            }
+
+        }
+
+        return nota/contador;
+    }
 }
