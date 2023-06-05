@@ -99,6 +99,34 @@ public class UsuarioService{
         return relacionados;
 
     }
+    public void declararInteresse(String interesado, String interessante) {
+        Usuario perfilInteressado = usuarioRepository.findByEmail(interesado).get();
+        Usuario perfilInteressante = usuarioRepository.findByEmail(interessante).get();
+
+        if (perfilInteressado.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
+            Responsavel responsavel  = (Responsavel) perfilInteressado;
+            Cuidador cuidador = (Cuidador) perfilInteressante;
+
+            List<Cuidador> newC = responsavel.getCuidadores();
+            newC.add(cuidador);
+            responsavel.setCuidadores(newC);
+
+            List<Responsavel> newR =  cuidador.getResponsaveis();
+            newR.add(responsavel);
+            cuidador.setResponsaveis(newR);
+        } else {
+            Responsavel responsavel  = (Responsavel) perfilInteressante;
+            Cuidador cuidador = (Cuidador) perfilInteressado;
+
+            List<Cuidador> newC = responsavel.getCuidadores();
+            newC.add(cuidador);
+            responsavel.setCuidadores(newC);
+
+            List<Responsavel> newR =  cuidador.getResponsaveis();
+            newR.add(responsavel);
+            cuidador.setResponsaveis(newR);
+        }
+    }
     public List<UsuarioReturnDTO> usuarios() {
         List<Usuario> us = usuarioRepository.findAll();
         List<UsuarioReturnDTO> usuarios = new ArrayList<UsuarioReturnDTO>();
@@ -106,5 +134,9 @@ public class UsuarioService{
             usuarios.add(UsuarioReturnDTO.convert(u));
         }
         return usuarios;
+    }
+    public UsuarioTipo usuarioTipo(String email) {
+        Usuario user = usuarioRepository.findByEmail(email).get();
+        return user.getTipo();
     }
 }

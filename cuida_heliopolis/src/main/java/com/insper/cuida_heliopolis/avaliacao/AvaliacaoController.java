@@ -59,7 +59,7 @@ public class AvaliacaoController {
             return null;
         }
         // verifica se a avaliação é legal.
-        if (usuarioService.usuario(email).equals(usuarioService.usuario(avaliadorEmail))) {
+        if (usuarioService.usuarioTipo(email).equals(usuarioService.usuarioTipo(avaliadorEmail))) {
             return null;
         }
 
