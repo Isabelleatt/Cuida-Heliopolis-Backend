@@ -52,6 +52,7 @@ public class AvaliacaoService {
         cuidador.setQualificacaoMedia(cuidador.calculaNotaMedia("qualificação"));
         cuidador.setVinculoMedia(cuidador.calculaNotaMedia("vínculo"));
         cuidador.setAtividadesMedia(cuidador.calculaNotaMedia("atividades"));
+        usuarioRepository.save(cuidador);
 
         return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, cuidador.getNome());
 
@@ -79,6 +80,7 @@ public class AvaliacaoService {
         responsavel.setComportamentoMedia(responsavel.calculaNotaMedia("comportamento"));
         responsavel.setPagamentoMedia(responsavel.calculaNotaMedia("pagamento"));
         responsavel.setPontualidadeMedia(responsavel.calculaNotaMedia("pontualidade"));
+        usuarioRepository.save(responsavel);
 
         return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, responsavel.getNome());
     }

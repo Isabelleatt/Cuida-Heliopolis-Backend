@@ -43,7 +43,7 @@ public class Cuidador extends Usuario{
 
     public double calculaNotaMedia(String tipo) {
         double nota = 0;
-        int contador = this.avaliacoes.size();
+        double contador = (double) this.avaliacoes.size();
         for (AvaliaCuidadora a : this.avaliacoes) {
             if (tipo.equals("espaço")) {
                 nota += a.getEspaco();

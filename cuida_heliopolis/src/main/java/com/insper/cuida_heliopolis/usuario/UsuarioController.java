@@ -30,11 +30,13 @@ public class UsuarioController {
             return usuarioService.usuarios();
         return null;
     }
-    @GetMapping
+
+    @GetMapping("/cuidadores")
     public List<CuidadorReturnDTO> getCuidadores() {
         return usuarioService.cuidadores();
-    };
-    @GetMapping
+    }
+
+    @GetMapping("/responsaveis")
     public List<ResponsavelReturnDTO> getResponsaveis(@RequestHeader("Authorization") String authorizationHeader) {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String name = jwtService.extractUsername(authToken);
@@ -42,7 +44,7 @@ public class UsuarioController {
             return usuarioService.responsaveis();
         }
         return null;
-    };
+    }
 
 
     @GetMapping("/cuidador/{email}")

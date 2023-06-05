@@ -32,7 +32,7 @@ public class Responsavel extends Usuario{
 
     public double calculaNotaMedia(String tipo) {
         double nota = 0;
-        int contador = this.avaliacoes.size();
+        double contador = (double) this.avaliacoes.size();
         for (AvaliaResponsavel a : this.avaliacoes) {
             if (tipo.equals("comportamento")) {
                 nota += a.getComportamento();
