@@ -12,6 +12,7 @@ public class AvaliacaoCuidadoraReturnDTO {
 
     private String nome;
     private LocalDateTime data;
+    private String avaliador;
 
     private Integer espaco;
     private Integer disponibilidade;
@@ -22,10 +23,11 @@ public class AvaliacaoCuidadoraReturnDTO {
     
     private String comentario;
 
-    public static AvaliacaoCuidadoraReturnDTO convert(AvaliaCuidadora avaliacao, String nome) {
+    public static AvaliacaoCuidadoraReturnDTO convert(AvaliaCuidadora avaliacao, String nome, String nomeAvalidador) {
 
         AvaliacaoCuidadoraReturnDTO retorno = new AvaliacaoCuidadoraReturnDTO();
         retorno.setNome(nome);
+        retorno.setAvaliador(nomeAvalidador);
         retorno.setData(avaliacao.getData());
 
         retorno.setEspaco(avaliacao.getEspaco());

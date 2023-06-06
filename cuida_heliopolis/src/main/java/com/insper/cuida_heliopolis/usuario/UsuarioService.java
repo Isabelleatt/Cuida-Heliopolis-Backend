@@ -12,6 +12,7 @@ import com.insper.cuida_heliopolis.auth.AuthenticationResponse;
 import com.insper.cuida_heliopolis.config.JwtService;
 import com.insper.cuida_heliopolis.usuario.dto.CuidadorReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.ResponsavelReturnDTO;
+import com.insper.cuida_heliopolis.usuario.dto.UsuarioEditDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
@@ -58,25 +59,32 @@ public class UsuarioService{
         var jwtToken = jwtService.generateToken(u);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
-    public UsuarioReturnDTO alterar(UsuarioSaveDTO usuario, String email) {
-        Usuario u = usuarioRepository.findByEmail(email).get();
+    public UsuarioReturnDTO alterar(UsuarioEditDTO usuario, String email) {
+        Usuario u = (Usuario) usuarioRepository.findByEmail(email).get();
+        if (u.getTipo().equals("CUIDADOR")) {
+            Cuidador c = (Cuidador) usuarioRepository.findByEmail(email).get();
+            if (usuario.getBio() != null) {c.setBio(usuario.getBio());}
+            if (usuario.getNumCriancas() != null) {c.setNumCriancas(usuario.getNumCriancas());}
+            if (usuario.getNome() != null) {c.setNome(usuario.getNome());}
+            if (usuario.getSenha() != null) {c.setSenha(usuario.getSenha());}
+            if (usuario.getEmail() != null) {c.setEmail(usuario.getEmail());}
+            if (usuario.getTelefone() != null) {c.setTelefone(usuario.getTelefone());}
+            usuarioRepository.save(c);
+            return UsuarioReturnDTO.convert(u);
+        }
+
         if (u != null) {
-            if (usuario.getNome() != null) {
-                u.setNome(usuario.getNome());
-            }
-
-            if (usuario.getEmail() != null) {
-                u.setEmail(usuario.getEmail());
-            }
-
-            if (usuario.getSenha() != null) {
-                u.setSenha(usuario.getSenha());
-            }
+            if (usuario.getNome() != null) { u.setNome(usuario.getNome());}
+            if (usuario.getEmail() != null) {u.setEmail(usuario.getEmail());}
+            if (usuario.getSenha() != null) {u.setSenha(usuario.getSenha());}
+            if (usuario.getTelefone() != null) {u.setTelefone(usuario.getTelefone());}
             usuarioRepository.save(u);
-            return UsuarioReturnDTO.convert(usuario);
+            return UsuarioReturnDTO.convert(u);
         }
         return null;
     }
+
+
     public List<UsuarioReturnDTO> usuariosRelacionados(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email).get();
         List<UsuarioReturnDTO> relacionados = new ArrayList<>();

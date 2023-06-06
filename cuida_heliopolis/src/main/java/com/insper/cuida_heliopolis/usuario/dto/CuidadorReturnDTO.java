@@ -21,6 +21,7 @@ public class CuidadorReturnDTO {
     private double qualificacaoMedia;
     private double vinculoMedia;
     private double atividadesMedia;
+    private double numAvaliacoes;
 
     public static CuidadorReturnDTO convert(Cuidador cuidador, boolean rel) {
         CuidadorReturnDTO cuidadorReturnDTO = new CuidadorReturnDTO();
@@ -40,6 +41,7 @@ public class CuidadorReturnDTO {
         cuidadorReturnDTO.setAtividadesMedia(cuidador.getAtividadesMedia());
         cuidadorReturnDTO.setInteressado(rel);
 
+        cuidadorReturnDTO.setNumAvaliacoes(cuidador.getNumAvaliacoes());
 
         return cuidadorReturnDTO;
     }
