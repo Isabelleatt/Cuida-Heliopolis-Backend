@@ -30,8 +30,10 @@ public class UsuarioController {
         return null;
     }
     @GetMapping("/cuidadores")
-    public List<CuidadorReturnDTO> getCuidadores() {
-        return usuarioService.cuidadores();
+    public List<CuidadorReturnDTO> getCuidadores(@RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String name = jwtService.extractUsername(authToken);
+        return usuarioService.cuidadores(name);
     }
     @GetMapping("/responsaveis")
     public List<ResponsavelReturnDTO> getResponsaveis(@RequestHeader("Authorization") String authorizationHeader) {
@@ -43,8 +45,11 @@ public class UsuarioController {
         return null;
     }
     @GetMapping("/cuidador/{email}")
-    public CuidadorReturnDTO getCuidador(@PathVariable String email) {
-        return usuarioService.cuidador(email);
+    public CuidadorReturnDTO getCuidador(@PathVariable String email,@RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String name = jwtService.extractUsername(authToken);
+
+        return usuarioService.cuidador(email,name);
     }
     @GetMapping("/responsavel/{email}")
     public ResponsavelReturnDTO getResponsavel(@PathVariable String email) {
@@ -55,6 +60,12 @@ public class UsuarioController {
         String authToken = authorizationHeader.substring("Bearer ".length());
         String interessado = jwtService.extractUsername(authToken);
         usuarioService.declararInteresse(interessado,email);
+    }
+    @DeleteMapping("/interesse/{email}")
+    public void removerInteresse(@PathVariable String email,@RequestHeader("Authorization") String authorizationHeader) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String interessado = jwtService.extractUsername(authToken);
+        usuarioService.removerInteresse(interessado,email);
     }
     @GetMapping("/relacionados/{email}")
     public List<UsuarioReturnDTO> getUsuariosRelacionados(@PathVariable String email) {
