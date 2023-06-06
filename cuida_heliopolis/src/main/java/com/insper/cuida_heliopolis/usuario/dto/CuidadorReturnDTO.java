@@ -14,7 +14,7 @@ public class CuidadorReturnDTO {
 
     private String bio;
     private Integer numCriancas;
-
+    private boolean interessado;
     private double notaMedia;
     private double espacoMedia;
     private double disponibilidadeMedia;
@@ -22,7 +22,7 @@ public class CuidadorReturnDTO {
     private double vinculoMedia;
     private double atividadesMedia;
 
-    public static CuidadorReturnDTO convert(Cuidador cuidador) {
+    public static CuidadorReturnDTO convert(Cuidador cuidador, boolean rel) {
         CuidadorReturnDTO cuidadorReturnDTO = new CuidadorReturnDTO();
 
         cuidadorReturnDTO.setNome(cuidador.getNome());
@@ -38,6 +38,8 @@ public class CuidadorReturnDTO {
         cuidadorReturnDTO.setQualificacaoMedia(cuidador.getQualificacaoMedia());
         cuidadorReturnDTO.setVinculoMedia(cuidador.getVinculoMedia());
         cuidadorReturnDTO.setAtividadesMedia(cuidador.getAtividadesMedia());
+        cuidadorReturnDTO.setInteressado(rel);
+
 
         return cuidadorReturnDTO;
     }

@@ -17,13 +17,10 @@ import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
 @Service
 public class UsuarioService{
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private JwtService jwtService;
 
@@ -108,6 +105,11 @@ public class UsuarioService{
             Responsavel responsavel  = (Responsavel) perfilInteressado;
             Cuidador cuidador = (Cuidador) perfilInteressante;
 
+            for (Responsavel r:cuidador.getResponsaveis()) {
+                if (r.getNome().equals(interessado)) {
+                    return;
+                }
+            }
             responsavel.getCuidadores().add(cuidador);
             cuidador.getResponsaveis().add(responsavel);
 
@@ -117,6 +119,12 @@ public class UsuarioService{
             Responsavel responsavel  = (Responsavel) perfilInteressante;
             Cuidador cuidador = (Cuidador) perfilInteressado;
 
+            for (Responsavel r:cuidador.getResponsaveis()) {
+                if (r.getNome().equals(interessado)) {
+                    return;
+                }
+            }
+
             responsavel.getCuidadores().add(cuidador);
             cuidador.getResponsaveis().add(responsavel);
 
@@ -124,6 +132,30 @@ public class UsuarioService{
             usuarioRepository.save(responsavel);
         }
 
+    }
+    public void removerInteresse(String interessado, String interessante) {
+        Usuario perfilInteressado = usuarioRepository.findByEmail(interessado).get();
+        Usuario perfilInteressante = usuarioRepository.findByEmail(interessante).get();
+
+        if (perfilInteressado.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
+            Responsavel responsavel  = (Responsavel) perfilInteressado;
+            Cuidador cuidador = (Cuidador) perfilInteressante;
+
+            responsavel.getCuidadores().remove(cuidador);
+            cuidador.getResponsaveis().remove(responsavel);
+
+            usuarioRepository.save(cuidador);
+            usuarioRepository.save(responsavel);
+        } else {
+            Responsavel responsavel  = (Responsavel) perfilInteressante;
+            Cuidador cuidador = (Cuidador) perfilInteressado;
+
+            responsavel.getCuidadores().remove(cuidador);
+            cuidador.getResponsaveis().remove(responsavel);
+
+            usuarioRepository.save(cuidador);
+            usuarioRepository.save(responsavel);
+        }
     }
     public List<UsuarioReturnDTO> relacionados(String email) {
         Usuario user = usuarioRepository.findByEmail(email).get();
@@ -155,18 +187,31 @@ public class UsuarioService{
         Usuario user = usuarioRepository.findByEmail(email).get();
         return user.getTipo();
     }
-    public CuidadorReturnDTO cuidador(String email) {
+    public CuidadorReturnDTO cuidador(String email, String name) {
         Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
+        boolean rel =  false;
+        for (Responsavel r : cuidador.getResponsaveis()) {
+            if (r.getNome().equals(name)) {
+                rel = true;
+            }
+        }
         if (cuidador != null) {
-            return CuidadorReturnDTO.convert(cuidador);
+            return CuidadorReturnDTO.convert(cuidador,rel);
         }
         return null;
     }
-    public List<CuidadorReturnDTO> cuidadores() {
+    public List<CuidadorReturnDTO> cuidadores(String visualizador) {
         List<Usuario> cuidadores = usuarioRepository.findByTipo(UsuarioTipo.CUIDADOR);
         List<CuidadorReturnDTO> retorno = new ArrayList<>();
+        boolean rel = false;
         for (Usuario c : cuidadores) {
-            retorno.add(CuidadorReturnDTO.convert((Cuidador) c));
+            Cuidador C = (Cuidador) c;
+            for (Responsavel r:C.getResponsaveis()) {
+                if (r.getNome().equals(visualizador)) {
+                    rel = true;
+                }
+            }
+            retorno.add(CuidadorReturnDTO.convert(C, rel));
         }
         return retorno;
     }
