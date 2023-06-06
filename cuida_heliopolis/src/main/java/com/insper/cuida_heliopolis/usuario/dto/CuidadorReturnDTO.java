@@ -1,6 +1,7 @@
 package com.insper.cuida_heliopolis.usuario.dto;
 
 import com.insper.cuida_heliopolis.usuario.Cuidador;
+import com.insper.cuida_heliopolis.verificado.VerificadoStatus;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class CuidadorReturnDTO {
     private double vinculoMedia;
     private double atividadesMedia;
     private double numAvaliacoes;
+    private boolean temVerificado;
 
     public static CuidadorReturnDTO convert(Cuidador cuidador) {
         CuidadorReturnDTO cuidadorReturnDTO = new CuidadorReturnDTO();
@@ -40,6 +42,12 @@ public class CuidadorReturnDTO {
         cuidadorReturnDTO.setVinculoMedia(cuidador.getVinculoMedia());
         cuidadorReturnDTO.setAtividadesMedia(cuidador.getAtividadesMedia());
         cuidadorReturnDTO.setNumAvaliacoes(cuidador.getNumAvaliacoes());
+        cuidadorReturnDTO.setTemVerificado(false);
+        if (cuidador.getVerificado() != null) {
+            if (cuidador.getVerificado().getStatus() == VerificadoStatus.ATIVO){
+                cuidadorReturnDTO.setTemVerificado(true);
+            }
+        }
 
         return cuidadorReturnDTO;
     }
