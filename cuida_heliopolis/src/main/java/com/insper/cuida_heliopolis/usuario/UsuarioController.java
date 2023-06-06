@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.insper.cuida_heliopolis.auth.AuthenticationResponse;
 import com.insper.cuida_heliopolis.usuario.dto.CuidadorReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.ResponsavelReturnDTO;
+import com.insper.cuida_heliopolis.usuario.dto.UsuarioEditDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioReturnDTO;
 import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
@@ -64,7 +65,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.cadastro(usuario, tipo));
     }
     @PutMapping("/usuario/{email}")
-    public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioSaveDTO usuario, @PathVariable String email) {
+    public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioEditDTO usuario, @PathVariable String email) {
         return usuarioService.alterar(usuario, email);
     }
 
