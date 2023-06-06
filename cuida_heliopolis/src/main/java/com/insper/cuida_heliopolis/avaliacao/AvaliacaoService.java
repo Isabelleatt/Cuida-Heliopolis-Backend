@@ -38,7 +38,7 @@ public class AvaliacaoService {
         avaliaCuidadora.setQualificacao(avaliacao.getQualificacao());
         avaliaCuidadora.setVinculo(avaliacao.getVinculo());
         avaliaCuidadora.setAtividades(avaliacao.getAtividades());
-        avaliaCuidadora.setMediaAval((avaliacao.getAtividades() + avaliacao.getDisponibilidade() + avaliacao.getEspaco() + avaliacao.getQualificacao() + avaliacao.getVinculo()) / 5);
+        avaliaCuidadora.setMediaAval((avaliacao.getAtividades() + avaliacao.getDisponibilidade() + avaliacao.getEspaco() + avaliacao.getQualificacao() + avaliacao.getVinculo()) / 5.0);
 
         avaliaCuidadora.setComentario(avaliacao.getComentario());
 
@@ -72,7 +72,7 @@ public class AvaliacaoService {
         avaliaResponsavel.setComportamento(avaliacao.getComportamento());
         avaliaResponsavel.setPontualidade(avaliacao.getPontualidade());
         avaliaResponsavel.setPagamento(avaliacao.getPagamento());
-        avaliaResponsavel.setMediaAval((avaliacao.getComportamento() + avaliacao.getPontualidade() + avaliacao.getPagamento()) / 3);
+        avaliaResponsavel.setMediaAval((avaliacao.getComportamento() + avaliacao.getPontualidade() + avaliacao.getPagamento()) / 3.0);
 
         avaliacaoRepository.save(avaliaResponsavel);
 
