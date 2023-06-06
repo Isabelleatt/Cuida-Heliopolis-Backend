@@ -29,6 +29,7 @@ public class Cuidador extends Usuario{
     private double qualificacaoMedia;
     private double vinculoMedia;
     private double atividadesMedia;
+    private double numAvaliacoes;
     
     @JsonIgnore
     @OneToOne(mappedBy = "cuidador")

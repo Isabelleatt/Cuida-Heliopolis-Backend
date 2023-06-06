@@ -16,6 +16,8 @@ public class ResponsavelReturnDTO {
     private double comportamentoMedia;
     private double pontualidadeMedia;
     private double pagamentoMedia;
+    private double numAvaliacoes;
+
 
     public static ResponsavelReturnDTO convert(Responsavel responsavel) {
         ResponsavelReturnDTO responsavelReturnDTO = new ResponsavelReturnDTO();
@@ -28,6 +30,7 @@ public class ResponsavelReturnDTO {
         responsavelReturnDTO.setComportamentoMedia(responsavel.getComportamentoMedia());
         responsavelReturnDTO.setPontualidadeMedia(responsavel.getPontualidadeMedia());
         responsavelReturnDTO.setPagamentoMedia(responsavel.getPagamentoMedia());
+        responsavelReturnDTO.setNumAvaliacoes(responsavel.getNumAvaliacoes());
 
         return responsavelReturnDTO;
     }

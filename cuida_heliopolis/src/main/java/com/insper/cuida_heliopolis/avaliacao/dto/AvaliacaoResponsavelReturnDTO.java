@@ -13,13 +13,15 @@ public class AvaliacaoResponsavelReturnDTO {
     
     private String nome;
     private LocalDateTime data;
+    private String avaliador;
 
     private Integer comportamento;
     private Integer pontualidade;
     private Integer pagamento;
     private double mediaAval;
 
-    public static AvaliacaoResponsavelReturnDTO convert(AvaliaResponsavel avaliacao, String nome) {
+
+    public static AvaliacaoResponsavelReturnDTO convert(AvaliaResponsavel avaliacao, String nome, String avaliador) {
 
         AvaliacaoResponsavelReturnDTO retorno = new AvaliacaoResponsavelReturnDTO();
         retorno.setNome(nome);
@@ -29,6 +31,7 @@ public class AvaliacaoResponsavelReturnDTO {
         retorno.setPontualidade(avaliacao.getPontualidade());
         retorno.setPagamento(avaliacao.getPagamento());
         retorno.setMediaAval(avaliacao.getMediaAval());
+        retorno.setAvaliador(avaliador);
 
         return retorno;
     }

@@ -22,6 +22,7 @@ public class Responsavel extends Usuario{
     private double comportamentoMedia;
     private double pontualidadeMedia;
     private double pagamentoMedia;
+    private double numAvaliacoes;
     
     @JsonIgnore
     @ManyToMany(mappedBy = "responsaveis")

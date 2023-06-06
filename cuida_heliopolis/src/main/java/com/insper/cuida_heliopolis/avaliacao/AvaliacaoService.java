@@ -1,5 +1,6 @@
 package com.insper.cuida_heliopolis.avaliacao;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,9 +53,11 @@ public class AvaliacaoService {
         cuidador.setQualificacaoMedia(cuidador.calculaNotaMedia("qualificação"));
         cuidador.setVinculoMedia(cuidador.calculaNotaMedia("vínculo"));
         cuidador.setAtividadesMedia(cuidador.calculaNotaMedia("atividades"));
+        cuidador.setNumAvaliacoes(cuidador.getNumAvaliacoes() + 1);
         usuarioRepository.save(cuidador);
+        String anome = usuarioRepository.findByEmail(avaliacao.getAvaliadorEmail()).get().getNome();
 
-        return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, cuidador.getNome());
+        return AvaliacaoCuidadoraReturnDTO.convert(avaliaCuidadora, cuidador.getNome(), anome);
 
 
     }
@@ -80,9 +83,11 @@ public class AvaliacaoService {
         responsavel.setComportamentoMedia(responsavel.calculaNotaMedia("comportamento"));
         responsavel.setPagamentoMedia(responsavel.calculaNotaMedia("pagamento"));
         responsavel.setPontualidadeMedia(responsavel.calculaNotaMedia("pontualidade"));
+        responsavel.setNumAvaliacoes(responsavel.getNumAvaliacoes() + 1);
         usuarioRepository.save(responsavel);
+        String anome = usuarioRepository.findByEmail(avaliacao.getAvaliadorEmail()).get().getNome();
 
-        return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, responsavel.getNome());
+        return AvaliacaoResponsavelReturnDTO.convert(avaliaResponsavel, responsavel.getNome(), anome);
     }
 
     public List<AvaliacaoCuidadoraReturnDTO> buscaAvaliacoesCuidadora(String email) {
@@ -91,7 +96,8 @@ public class AvaliacaoService {
 
         for (Avaliacao a : avaliacoes) {
             String nome = usuarioRepository.findByEmail(a.getAvaliadoEmail()).get().getNome();
-            retorno.add(AvaliacaoCuidadoraReturnDTO.convert((AvaliaCuidadora) a, nome));
+            String anome = usuarioRepository.findByEmail(a.getAvaliadorEmail()).get().getNome();
+            retorno.add(AvaliacaoCuidadoraReturnDTO.convert((AvaliaCuidadora) a, nome, anome));
         }
 
         return retorno;
@@ -103,7 +109,8 @@ public class AvaliacaoService {
 
         for (Avaliacao a : avaliacoes) {
             String nome = usuarioRepository.findByEmail(a.getAvaliadoEmail()).get().getNome();
-            retorno.add(AvaliacaoResponsavelReturnDTO.convert((AvaliaResponsavel) a, nome));
+            String anome = usuarioRepository.findByEmail(a.getAvaliadorEmail()).get().getNome();
+            retorno.add(AvaliacaoResponsavelReturnDTO.convert((AvaliaResponsavel) a, nome, anome));
         }
 
         return retorno;
