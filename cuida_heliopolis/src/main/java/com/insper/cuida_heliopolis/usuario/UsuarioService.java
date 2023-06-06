@@ -186,17 +186,9 @@ public class UsuarioService{
     public List<CuidadorReturnDTO> cuidadores(String visualizador) {
         List<Usuario> cuidadores = usuarioRepository.findByTipo(UsuarioTipo.CUIDADOR);
         List<CuidadorReturnDTO> retorno = new ArrayList<>();
-        boolean rel = false;
         for (Usuario c : cuidadores) {
             Cuidador C = (Cuidador) c;
-            for (Responsavel r:C.getResponsaveis()) {
-                if (r.getEmail().equals(visualizador)) {
-                    retorno.add(CuidadorReturnDTO.convert(C,true));
-                }
-                else {
-                    retorno.add(CuidadorReturnDTO.convert(C,false));
-                }
-            }
+            retorno.add(CuidadorReturnDTO.convert(C,false));
         }
         return retorno;
     }
