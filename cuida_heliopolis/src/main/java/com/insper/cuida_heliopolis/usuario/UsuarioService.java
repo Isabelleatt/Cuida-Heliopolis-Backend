@@ -106,32 +106,16 @@ public class UsuarioService{
             Cuidador cuidador = (Cuidador) perfilInteressante;
 
             for (Responsavel r:cuidador.getResponsaveis()) {
-                if (r.getNome().equals(interessado)) {
+                if (r.getEmail().equals(interessado)) {
                     return;
                 }
             }
-            responsavel.getCuidadores().add(cuidador);
-            cuidador.getResponsaveis().add(responsavel);
-
-            usuarioRepository.save(cuidador);
-            usuarioRepository.save(responsavel);
-        } else {
-            Responsavel responsavel  = (Responsavel) perfilInteressante;
-            Cuidador cuidador = (Cuidador) perfilInteressado;
-
-            for (Responsavel r:cuidador.getResponsaveis()) {
-                if (r.getNome().equals(interessado)) {
-                    return;
-                }
-            }
-
             responsavel.getCuidadores().add(cuidador);
             cuidador.getResponsaveis().add(responsavel);
 
             usuarioRepository.save(cuidador);
             usuarioRepository.save(responsavel);
         }
-
     }
     public void removerInteresse(String interessado, String interessante) {
         Usuario perfilInteressado = usuarioRepository.findByEmail(interessado).get();
@@ -140,15 +124,6 @@ public class UsuarioService{
         if (perfilInteressado.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
             Responsavel responsavel  = (Responsavel) perfilInteressado;
             Cuidador cuidador = (Cuidador) perfilInteressante;
-
-            responsavel.getCuidadores().remove(cuidador);
-            cuidador.getResponsaveis().remove(responsavel);
-
-            usuarioRepository.save(cuidador);
-            usuarioRepository.save(responsavel);
-        } else {
-            Responsavel responsavel  = (Responsavel) perfilInteressante;
-            Cuidador cuidador = (Cuidador) perfilInteressado;
 
             responsavel.getCuidadores().remove(cuidador);
             cuidador.getResponsaveis().remove(responsavel);
@@ -187,11 +162,11 @@ public class UsuarioService{
         Usuario user = usuarioRepository.findByEmail(email).get();
         return user.getTipo();
     }
-    public CuidadorReturnDTO cuidador(String email, String name) {
+    public CuidadorReturnDTO cuidador(String email, String email_view) {
         Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
         boolean rel =  false;
         for (Responsavel r : cuidador.getResponsaveis()) {
-            if (r.getNome().equals(name)) {
+            if (r.getEmail().equals(email_view)) {
                 rel = true;
             }
         }
@@ -207,11 +182,13 @@ public class UsuarioService{
         for (Usuario c : cuidadores) {
             Cuidador C = (Cuidador) c;
             for (Responsavel r:C.getResponsaveis()) {
-                if (r.getNome().equals(visualizador)) {
-                    rel = true;
+                if (r.getEmail().equals(visualizador)) {
+                    retorno.add(CuidadorReturnDTO.convert(C,true));
+                }
+                else {
+                    retorno.add(CuidadorReturnDTO.convert(C,false));
                 }
             }
-            retorno.add(CuidadorReturnDTO.convert(C, rel));
         }
         return retorno;
     }
