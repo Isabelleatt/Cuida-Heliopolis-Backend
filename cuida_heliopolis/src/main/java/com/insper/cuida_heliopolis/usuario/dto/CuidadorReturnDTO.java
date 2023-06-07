@@ -1,7 +1,6 @@
 package com.insper.cuida_heliopolis.usuario.dto;
 
 import com.insper.cuida_heliopolis.usuario.Cuidador;
-import com.insper.cuida_heliopolis.verificado.VerificadoStatus;
 
 import lombok.Getter;
 import lombok.Setter;
