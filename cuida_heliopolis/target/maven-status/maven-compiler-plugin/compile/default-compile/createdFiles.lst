@@ -3,6 +3,7 @@ com/insper/cuida_heliopolis/avaliacao/AvaliacaoService.class
 com/insper/cuida_heliopolis/auth/AuthenticationController.class
 com/insper/cuida_heliopolis/avaliacao/dto/AvaliacaoResponsavelReturnDTO.class
 com/insper/cuida_heliopolis/verificado/VerificadoController.class
+com/insper/cuida_heliopolis/verificado/dto/VerificadoReturnDTO.class
 com/insper/cuida_heliopolis/auth/AuthenticationResponse.class
 com/insper/cuida_heliopolis/auth/AuthenticationResponse$AuthenticationResponseBuilder.class
 com/insper/cuida_heliopolis/config/ApplicationConfig.class

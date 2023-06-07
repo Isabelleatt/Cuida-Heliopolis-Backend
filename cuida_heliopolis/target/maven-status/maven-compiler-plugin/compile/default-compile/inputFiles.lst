@@ -7,6 +7,7 @@
 /Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/usuario/UsuarioController.java
 /Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/usuario/UsuarioRepository.java
 /Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/avaliacao/dto/AvaliacaoCuidadoraSaveDTO.java
+/Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/verificado/dto/VerificadoReturnDTO.java
 /Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/auth/AuthenticationService.java
 /Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/usuario/dto/UsuarioSaveDTO.java
 /Users/pedropertusi/Desktop/Cuida-Heliopolis-Backend/cuida_heliopolis/src/main/java/com/insper/cuida_heliopolis/auth/AuthenticationController.java
