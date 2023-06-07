@@ -46,7 +46,8 @@ public class CuidadorReturnDTO {
         cuidadorReturnDTO.setNumAvaliacoes(cuidador.getNumAvaliacoes());
         cuidadorReturnDTO.setTemVerificado(false);
         if (cuidador.getVerificado() != null) {
-            if (cuidador.getVerificado().getStatus() == VerificadoStatus.ATIVO){
+            System.out.println(cuidador.getVerificado().getStatus().toString());
+            if (cuidador.getVerificado().getStatus().toString().equals("ATIVO")){
                 cuidadorReturnDTO.setTemVerificado(true);
             }
         }

@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface VerificadoRepository  extends JpaRepository<Verificado, Integer> {
 
     Verificado findByCuidadorId(Integer id);
+    Verificado findByCuidadorEmail(String email);
 
 }

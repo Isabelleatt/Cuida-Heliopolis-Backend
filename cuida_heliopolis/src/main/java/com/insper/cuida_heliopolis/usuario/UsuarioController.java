@@ -77,6 +77,7 @@ public class UsuarioController {
     }
     @PutMapping("/usuario/{email}")
     public UsuarioReturnDTO alterarUsuario(@RequestBody UsuarioEditDTO usuario, @PathVariable String email) {
+        System.out.println(usuario.getBio());
         return usuarioService.alterar(usuario, email);
     }
 

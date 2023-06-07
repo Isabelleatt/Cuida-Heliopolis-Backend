@@ -26,9 +26,13 @@ public class Verificado {
     @JoinColumn(name = "cuidador_id")
     private Cuidador cuidador;
 
+    private String cuidador_email;
+
     @ManyToOne
     @JoinColumn(name = "aprovador_id")
     private Membro aprovador;
+    
+    private String aprovador_email;
 
     private LocalDateTime dataAprovacao;
 

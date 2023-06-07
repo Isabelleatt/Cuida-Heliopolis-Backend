@@ -10,4 +10,5 @@ public class UsuarioSaveDTO {
     private String telefone;
     private String email;
     private String senha;
+    private String bio;
 }
