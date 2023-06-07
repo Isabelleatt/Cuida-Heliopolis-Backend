@@ -72,6 +72,13 @@ public class VerificadoService {
         return VerificadoReturnDTO.convert(v);
 
     }
+
+    public void removerVerificado (String cuidador_email) {
+        Verificado v = verificadoRepository.findByCuidadorEmail(cuidador_email);
+        if (v == null) {return;}
+        verificadoRepository.delete(v);
+        return;
+    }
         
 }
     

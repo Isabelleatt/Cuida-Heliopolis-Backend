@@ -45,4 +45,14 @@ public class VerificadoController {
     public void alteraStatus(@PathVariable String email) {
         verificadoService.alteraStatus(email);
     }
+
+    @DeleteMapping("/{email_cuidador}")
+    public void removerVerificado(@RequestHeader("Authorization") String authorizationHeader, @PathVariable String email_cuidador) {
+        String authToken = authorizationHeader.substring("Bearer ".length());
+        String name = jwtService.extractUsername(authToken);
+        if (usuarioService.usuarioTipo(name).equals(UsuarioTipo.MEMBRO)) {
+            verificadoService.removerVerificado(email_cuidador);
+        }
+        return;
+    }
 }
