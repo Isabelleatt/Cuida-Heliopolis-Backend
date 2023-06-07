@@ -38,7 +38,7 @@ public class AvaliacaoService {
         avaliaCuidadora.setQualificacao(avaliacao.getQualificacao());
         avaliaCuidadora.setVinculo(avaliacao.getVinculo());
         avaliaCuidadora.setAtividades(avaliacao.getAtividades());
-        avaliaCuidadora.setMediaAval((avaliacao.getAtividades() + avaliacao.getDisponibilidade() + avaliacao.getEspaco() + avaliacao.getQualificacao() + avaliacao.getVinculo()) / 5);
+        avaliaCuidadora.setMediaAval((avaliacao.getAtividades() + avaliacao.getDisponibilidade() + avaliacao.getEspaco() + avaliacao.getQualificacao() + avaliacao.getVinculo()) / 5.0);
 
         avaliaCuidadora.setComentario(avaliacao.getComentario());
 
@@ -46,13 +46,14 @@ public class AvaliacaoService {
 
         Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
         cuidador.getAvaliacoes().add(avaliaCuidadora);
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findByAvaliadoEmail(cuidador.getEmail());
 
-        cuidador.setNotaMedia(cuidador.calculaNotaMedia("media"));
-        cuidador.setDisponibilidadeMedia(cuidador.calculaNotaMedia("disponibilidade"));
-        cuidador.setEspacoMedia(cuidador.calculaNotaMedia("espaço"));
-        cuidador.setQualificacaoMedia(cuidador.calculaNotaMedia("qualificação"));
-        cuidador.setVinculoMedia(cuidador.calculaNotaMedia("vínculo"));
-        cuidador.setAtividadesMedia(cuidador.calculaNotaMedia("atividades"));
+        cuidador.setNotaMedia(Cuidador.calculaNotaMedia("media", avaliacoes));
+        cuidador.setDisponibilidadeMedia(Cuidador.calculaNotaMedia("disponibilidade", avaliacoes));
+        cuidador.setEspacoMedia(Cuidador.calculaNotaMedia("espaço", avaliacoes));
+        cuidador.setQualificacaoMedia(Cuidador.calculaNotaMedia("qualificação", avaliacoes));
+        cuidador.setVinculoMedia(Cuidador.calculaNotaMedia("vínculo", avaliacoes));
+        cuidador.setAtividadesMedia(Cuidador.calculaNotaMedia("atividades", avaliacoes));
         cuidador.setNumAvaliacoes(cuidador.getNumAvaliacoes() + 1);
         usuarioRepository.save(cuidador);
         String anome = usuarioRepository.findByEmail(avaliacao.getAvaliadorEmail()).get().getNome();
@@ -72,17 +73,18 @@ public class AvaliacaoService {
         avaliaResponsavel.setComportamento(avaliacao.getComportamento());
         avaliaResponsavel.setPontualidade(avaliacao.getPontualidade());
         avaliaResponsavel.setPagamento(avaliacao.getPagamento());
-        avaliaResponsavel.setMediaAval((avaliacao.getComportamento() + avaliacao.getPontualidade() + avaliacao.getPagamento()) / 3);
+        avaliaResponsavel.setMediaAval((avaliacao.getComportamento() + avaliacao.getPontualidade() + avaliacao.getPagamento()) / 3.0);
 
         avaliacaoRepository.save(avaliaResponsavel);
 
         Responsavel responsavel = (Responsavel) usuarioRepository.findByEmail(email).get();
         responsavel.getAvaliacoes().add(avaliaResponsavel);
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findByAvaliadoEmail(responsavel.getEmail());
 
-        responsavel.setNotaMedia(responsavel.calculaNotaMedia("media"));
-        responsavel.setComportamentoMedia(responsavel.calculaNotaMedia("comportamento"));
-        responsavel.setPagamentoMedia(responsavel.calculaNotaMedia("pagamento"));
-        responsavel.setPontualidadeMedia(responsavel.calculaNotaMedia("pontualidade"));
+        responsavel.setNotaMedia(Responsavel.calculaNotaMedia("media", avaliacoes));
+        responsavel.setComportamentoMedia(Responsavel.calculaNotaMedia("comportamento", avaliacoes));
+        responsavel.setPagamentoMedia(Responsavel.calculaNotaMedia("pagamento", avaliacoes));
+        responsavel.setPontualidadeMedia(Responsavel.calculaNotaMedia("pontualidade", avaliacoes));
         responsavel.setNumAvaliacoes(responsavel.getNumAvaliacoes() + 1);
         usuarioRepository.save(responsavel);
         String anome = usuarioRepository.findByEmail(avaliacao.getAvaliadorEmail()).get().getNome();

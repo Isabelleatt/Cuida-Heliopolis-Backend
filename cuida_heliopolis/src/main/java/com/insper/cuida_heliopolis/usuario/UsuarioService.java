@@ -2,7 +2,6 @@ package com.insper.cuida_heliopolis.usuario;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,7 +63,7 @@ public class UsuarioService{
     }
     public UsuarioReturnDTO alterar(UsuarioEditDTO usuario, String email) {
         Usuario u = (Usuario) usuarioRepository.findByEmail(email).get();
-        if (u.getTipo().equals("CUIDADOR")) {
+        if (u.getTipo().equals(UsuarioTipo.CUIDADOR)) {
             Cuidador c = (Cuidador) usuarioRepository.findByEmail(email).get();
             if (usuario.getBio() != null) {c.setBio(usuario.getBio());}
             if (usuario.getNumCriancas() != null) {c.setNumCriancas(usuario.getNumCriancas());}

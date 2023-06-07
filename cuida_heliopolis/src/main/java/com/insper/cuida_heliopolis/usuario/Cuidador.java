@@ -1,9 +1,11 @@
 package com.insper.cuida_heliopolis.usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.insper.cuida_heliopolis.avaliacao.AvaliaCuidadora;
+import com.insper.cuida_heliopolis.avaliacao.Avaliacao;
 import com.insper.cuida_heliopolis.verificado.Verificado;
 
 import jakarta.persistence.Entity;
@@ -42,10 +44,17 @@ public class Cuidador extends Usuario{
     @OneToMany(mappedBy = "cuidador")
     private List<AvaliaCuidadora> avaliacoes;
 
-    public double calculaNotaMedia(String tipo) {
+    public static double calculaNotaMedia(String tipo, List<Avaliacao> lista) {
         double nota = 0;
-        double contador = (double) this.avaliacoes.size();
-        for (AvaliaCuidadora a : this.avaliacoes) {
+        double contador = (double) lista.size();
+        List<AvaliaCuidadora> avaliacoes = new ArrayList<>();
+
+        for (Avaliacao a : lista) {
+            AvaliaCuidadora avaliacao = (AvaliaCuidadora) a;
+            avaliacoes.add(avaliacao);
+        }
+        
+        for (AvaliaCuidadora a : avaliacoes) {
             if (tipo.equals("espaço")) {
                 nota += a.getEspaco();
             }

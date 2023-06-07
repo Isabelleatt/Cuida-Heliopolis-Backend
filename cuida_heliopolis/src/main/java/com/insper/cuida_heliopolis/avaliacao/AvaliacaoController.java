@@ -3,7 +3,6 @@ package com.insper.cuida_heliopolis.avaliacao;
 import com.insper.cuida_heliopolis.config.JwtService;
 import com.insper.cuida_heliopolis.usuario.UsuarioService;
 import com.insper.cuida_heliopolis.usuario.UsuarioTipo;
-import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
