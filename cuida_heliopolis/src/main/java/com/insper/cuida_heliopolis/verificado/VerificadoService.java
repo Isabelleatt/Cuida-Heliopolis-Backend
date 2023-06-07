@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.insper.cuida_heliopolis.usuario.Cuidador;
 import com.insper.cuida_heliopolis.usuario.Membro;
-import com.insper.cuida_heliopolis.usuario.Usuario;
 import com.insper.cuida_heliopolis.usuario.UsuarioRepository;
 import com.insper.cuida_heliopolis.verificado.dto.VerificadoReturnDTO;
 
