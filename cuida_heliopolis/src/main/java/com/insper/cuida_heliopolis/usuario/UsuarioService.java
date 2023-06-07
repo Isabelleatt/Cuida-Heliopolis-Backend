@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,49 +18,54 @@ import com.insper.cuida_heliopolis.usuario.dto.UsuarioSaveDTO;
 
 @Service
 public class UsuarioService{
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private JwtService jwtService;
 
     public AuthenticationResponse cadastro(UsuarioSaveDTO usuario, String tipo) {
-        Usuario u = null;
 
         if (tipo.equals("MEMBRO")) {
-            u = new Membro();
+            Membro u = new Membro();
 
             u.setNome(usuario.getNome());
             u.setTelefone(usuario.getTelefone());
             u.setEmail(usuario.getEmail());
             u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.MEMBRO);
+            usuarioRepository.save(u);
+            var jwtToken = jwtService.generateToken(u);
+            return AuthenticationResponse.builder().token(jwtToken).build();
         }
         else if (tipo.equals("CUIDADOR")) {
-            u = new Cuidador();
+            Cuidador u = new Cuidador();
 
             u.setNome(usuario.getNome());
             u.setTelefone(usuario.getTelefone());
             u.setEmail(usuario.getEmail());
+            u.setBio(usuario.getBio());
             u.setSenha(passwordEncoder.encode(usuario.getSenha()));
             u.setTipo(UsuarioTipo.CUIDADOR);
+            usuarioRepository.save(u);
+            var jwtToken = jwtService.generateToken(u);
+            return AuthenticationResponse.builder().token(jwtToken).build();
         }
         else if (tipo.equals("RESPONSAVEL")) {
-            u = new Responsavel();
+            Responsavel u = new Responsavel();
 
             u.setNome(usuario.getNome());
             u.setTelefone(usuario.getTelefone());
             u.setEmail(usuario.getEmail());
             u.setSenha(passwordEncoder.encode(usuario.getSenha()));
-            u.setTipo(UsuarioTipo.RESPONSAVEL);            
+            u.setTipo(UsuarioTipo.RESPONSAVEL);       
+            
+            usuarioRepository.save(u);
+            var jwtToken = jwtService.generateToken(u);
+            return AuthenticationResponse.builder().token(jwtToken).build();
         }
-        usuarioRepository.save(u);
-        var jwtToken = jwtService.generateToken(u);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return null;
     }
     public UsuarioReturnDTO alterar(UsuarioEditDTO usuario, String email) {
         Usuario u = (Usuario) usuarioRepository.findByEmail(email).get();
@@ -68,7 +74,7 @@ public class UsuarioService{
             if (usuario.getBio() != null) {c.setBio(usuario.getBio());}
             if (usuario.getNumCriancas() != null) {c.setNumCriancas(usuario.getNumCriancas());}
             if (usuario.getNome() != null) {c.setNome(usuario.getNome());}
-            if (usuario.getSenha() != null) {c.setSenha(usuario.getSenha());}
+            if (usuario.getSenha() != null) {c.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));}
             if (usuario.getEmail() != null) {c.setEmail(usuario.getEmail());}
             if (usuario.getTelefone() != null) {c.setTelefone(usuario.getTelefone());}
             usuarioRepository.save(c);
@@ -78,7 +84,7 @@ public class UsuarioService{
         if (u != null) {
             if (usuario.getNome() != null) { u.setNome(usuario.getNome());}
             if (usuario.getEmail() != null) {u.setEmail(usuario.getEmail());}
-            if (usuario.getSenha() != null) {u.setSenha(usuario.getSenha());}
+            if (usuario.getSenha() != null) {u.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));}
             if (usuario.getTelefone() != null) {u.setTelefone(usuario.getTelefone());}
             usuarioRepository.save(u);
             return UsuarioReturnDTO.convert(u);
@@ -115,22 +121,32 @@ public class UsuarioService{
             Responsavel responsavel  = (Responsavel) perfilInteressado;
             Cuidador cuidador = (Cuidador) perfilInteressante;
 
-            responsavel.getCuidadores().add(cuidador);
-            cuidador.getResponsaveis().add(responsavel);
-
-            usuarioRepository.save(cuidador);
-            usuarioRepository.save(responsavel);
-        } else {
-            Responsavel responsavel  = (Responsavel) perfilInteressante;
-            Cuidador cuidador = (Cuidador) perfilInteressado;
-
+            for (Responsavel r:cuidador.getResponsaveis()) {
+                if (r.getEmail().equals(interessado)) {
+                    return;
+                }
+            }
             responsavel.getCuidadores().add(cuidador);
             cuidador.getResponsaveis().add(responsavel);
 
             usuarioRepository.save(cuidador);
             usuarioRepository.save(responsavel);
         }
+    }
+    public void removerInteresse(String interessado, String interessante) {
+        Usuario perfilInteressado = usuarioRepository.findByEmail(interessado).get();
+        Usuario perfilInteressante = usuarioRepository.findByEmail(interessante).get();
 
+        if (perfilInteressado.getTipo().equals(UsuarioTipo.RESPONSAVEL)) {
+            Responsavel responsavel  = (Responsavel) perfilInteressado;
+            Cuidador cuidador = (Cuidador) perfilInteressante;
+
+            responsavel.getCuidadores().remove(cuidador);
+            cuidador.getResponsaveis().remove(responsavel);
+
+            usuarioRepository.save(cuidador);
+            usuarioRepository.save(responsavel);
+        }
     }
     public List<UsuarioReturnDTO> relacionados(String email) {
         Usuario user = usuarioRepository.findByEmail(email).get();
@@ -162,18 +178,25 @@ public class UsuarioService{
         Usuario user = usuarioRepository.findByEmail(email).get();
         return user.getTipo();
     }
-    public CuidadorReturnDTO cuidador(String email) {
+    public CuidadorReturnDTO cuidador(String email, String email_view) {
         Cuidador cuidador = (Cuidador) usuarioRepository.findByEmail(email).get();
+        boolean rel =  false;
+        for (Responsavel r : cuidador.getResponsaveis()) {
+            if (r.getEmail().equals(email_view)) {
+                rel = true;
+            }
+        }
         if (cuidador != null) {
-            return CuidadorReturnDTO.convert(cuidador);
+            return CuidadorReturnDTO.convert(cuidador,rel);
         }
         return null;
     }
-    public List<CuidadorReturnDTO> cuidadores() {
+    public List<CuidadorReturnDTO> cuidadores(String visualizador) {
         List<Usuario> cuidadores = usuarioRepository.findByTipo(UsuarioTipo.CUIDADOR);
         List<CuidadorReturnDTO> retorno = new ArrayList<>();
         for (Usuario c : cuidadores) {
-            retorno.add(CuidadorReturnDTO.convert((Cuidador) c));
+            Cuidador C = (Cuidador) c;
+            retorno.add(CuidadorReturnDTO.convert(C,false));
         }
         return retorno;
     }

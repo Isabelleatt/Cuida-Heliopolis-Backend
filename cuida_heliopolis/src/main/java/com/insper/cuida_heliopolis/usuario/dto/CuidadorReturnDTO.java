@@ -1,6 +1,7 @@
 package com.insper.cuida_heliopolis.usuario.dto;
 
 import com.insper.cuida_heliopolis.usuario.Cuidador;
+import com.insper.cuida_heliopolis.verificado.VerificadoStatus;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ public class CuidadorReturnDTO {
 
     private String bio;
     private Integer numCriancas;
-
+    private boolean interessado;
     private double notaMedia;
     private double espacoMedia;
     private double disponibilidadeMedia;
@@ -22,8 +23,9 @@ public class CuidadorReturnDTO {
     private double vinculoMedia;
     private double atividadesMedia;
     private double numAvaliacoes;
+    private boolean temVerificado;
 
-    public static CuidadorReturnDTO convert(Cuidador cuidador) {
+    public static CuidadorReturnDTO convert(Cuidador cuidador, boolean rel) {
         CuidadorReturnDTO cuidadorReturnDTO = new CuidadorReturnDTO();
 
         cuidadorReturnDTO.setNome(cuidador.getNome());
@@ -39,7 +41,15 @@ public class CuidadorReturnDTO {
         cuidadorReturnDTO.setQualificacaoMedia(cuidador.getQualificacaoMedia());
         cuidadorReturnDTO.setVinculoMedia(cuidador.getVinculoMedia());
         cuidadorReturnDTO.setAtividadesMedia(cuidador.getAtividadesMedia());
+        cuidadorReturnDTO.setInteressado(rel);
+
         cuidadorReturnDTO.setNumAvaliacoes(cuidador.getNumAvaliacoes());
+        cuidadorReturnDTO.setTemVerificado(false);
+        if (cuidador.getVerificado() != null) {
+            if (cuidador.getVerificado().getStatus().toString().equals("ATIVO")){
+                cuidadorReturnDTO.setTemVerificado(true);
+            }
+        }
 
         return cuidadorReturnDTO;
     }
